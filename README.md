@@ -293,6 +293,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📊 Roadmap
 
 - [x] Recurring transactions ✅
+- [x] Dark mode ✅
 - [ ] Bill reminders with notifications
 - [ ] Export data (CSV, PDF)
 - [ ] Mobile app (React Native)
