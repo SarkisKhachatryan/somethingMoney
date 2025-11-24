@@ -13,6 +13,7 @@ A comprehensive web application for tracking family budgets, expenses, and finan
 - 💰 **Budget Management**: Create and manage monthly budgets with customizable categories
 - 📊 **Expense Tracking**: Track expenses in real-time with categories, descriptions, and dates
 - 💵 **Income Tracking**: Record and categorize various income sources
+- 🔄 **Recurring Transactions**: Set up recurring bills, subscriptions, and income with automatic processing
 - 🎯 **Goal Setting**: Set financial goals with progress tracking and target dates
 - 📈 **Reports & Analytics**: Visual reports with charts showing spending by category, budget vs actual
 - 🔔 **Notifications**: Basic notification system for budget alerts and reminders
@@ -95,8 +96,9 @@ This will start both:
 3. **Add categories** - Go to Settings to create expense and income categories
 4. **Set budgets** - Create monthly budgets for your expense categories
 5. **Track transactions** - Start adding your income and expenses
-6. **Set goals** - Create financial goals and track your progress
-7. **Invite family members** - Add other family members by email to collaborate
+6. **Set up recurring transactions** - Create recurring bills, subscriptions, and income
+7. **Set goals** - Create financial goals and track your progress
+8. **Invite family members** - Add other family members by email to collaborate
 
 ## 📁 Project Structure
 
@@ -170,6 +172,13 @@ The application uses SQLite with the following main tables:
 - `PUT /api/goals/:id` - Update goal
 - `DELETE /api/goals/:id` - Delete goal
 
+### Recurring Transactions
+- `GET /api/recurring/family/:familyId` - Get recurring transactions
+- `POST /api/recurring` - Create recurring transaction
+- `PUT /api/recurring/:id` - Update recurring transaction
+- `DELETE /api/recurring/:id` - Delete recurring transaction
+- `POST /api/recurring/process` - Process due recurring transactions
+
 ### Dashboard
 - `GET /api/dashboard/family/:familyId` - Get dashboard data
 
@@ -201,6 +210,14 @@ The application uses SQLite with the following main tables:
 - Set target amounts and dates
 - Track progress with visual progress bars
 - Personal or family goals
+
+### Recurring Transactions
+- Set up recurring bills, subscriptions, and income
+- Support for daily, weekly, monthly, and yearly frequencies
+- Schedule by day of week or day of month
+- Pause/resume recurring transactions
+- Automatic transaction creation from recurring items
+- Set start and end dates for recurring transactions
 
 ### Settings
 - Manage family members
@@ -266,7 +283,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📊 Roadmap
 
-- [ ] Recurring transactions
+- [x] Recurring transactions ✅
 - [ ] Bill reminders with notifications
 - [ ] Export data (CSV, PDF)
 - [ ] Mobile app (React Native)
