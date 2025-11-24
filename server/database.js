@@ -53,6 +53,7 @@ export async function initDatabase() {
     CREATE TABLE IF NOT EXISTS families (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
+      currency TEXT DEFAULT 'USD' CHECK(currency IN ('USD', 'EUR', 'AMD', 'RUB')),
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )
   `);

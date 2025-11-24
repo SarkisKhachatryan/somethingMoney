@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { CURRENCIES, formatCurrency } from '../utils/currency';
 import './Settings.css';
 
 function Settings() {
@@ -101,6 +102,18 @@ function Settings() {
     }
   };
 
+  const handleCurrencyChange = async (newCurrency) => {
+    try {
+      await axios.put(`/api/family/${familyId}/currency`, {
+        currency: newCurrency
+      });
+      await fetchFamilyDetails();
+      alert('Currency updated successfully!');
+    } catch (error) {
+      alert(error.response?.data?.error || 'Failed to update currency');
+    }
+  };
+
   const createFamily = async () => {
     const name = prompt('Enter family name:');
     if (!name) return;
@@ -171,6 +184,31 @@ function Settings() {
                   <span className={`member-role ${member.role}`}>{member.role}</span>
                 </div>
               ))}
+            </div>
+          )}
+        </div>
+
+        <div className="settings-section">
+          <div className="section-header">
+            <h2>Currency Settings</h2>
+          </div>
+          {selectedFamily && (
+            <div className="currency-selector">
+              <label>Default Currency</label>
+              <select
+                value={selectedFamily.family?.currency || 'USD'}
+                onChange={(e) => handleCurrencyChange(e.target.value)}
+                className="currency-select"
+              >
+                {Object.entries(CURRENCIES).map(([code, info]) => (
+                  <option key={code} value={code}>
+                    {info.symbol} {info.name} ({code})
+                  </option>
+                ))}
+              </select>
+              <p className="currency-note">
+                All amounts will be displayed in the selected currency. Exchange rates are updated automatically.
+              </p>
             </div>
           )}
         </div>

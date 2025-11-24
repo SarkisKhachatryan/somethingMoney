@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { formatCurrency } from '../utils/currency';
 import './Dashboard.css';
 
 function Dashboard() {
   const [familyId, setFamilyId] = useState(null);
   const [families, setFamilies] = useState([]);
   const [dashboardData, setDashboardData] = useState(null);
+  const [currency, setCurrency] = useState('USD');
   const [loading, setLoading] = useState(true);
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [year, setYear] = useState(new Date().getFullYear());
@@ -18,15 +20,22 @@ function Dashboard() {
   useEffect(() => {
     if (familyId) {
       fetchDashboardData();
+      // Update currency when family changes
+      const selectedFamily = families.find(f => f.id === familyId);
+      if (selectedFamily) {
+        setCurrency(selectedFamily.currency || 'USD');
+      }
     }
-  }, [familyId, month, year]);
+  }, [familyId, month, year, families]);
 
   const fetchFamilies = async () => {
     try {
       const response = await axios.get('/api/family');
       setFamilies(response.data.families);
       if (response.data.families.length > 0 && !familyId) {
-        setFamilyId(response.data.families[0].id);
+        const firstFamily = response.data.families[0];
+        setFamilyId(firstFamily.id);
+        setCurrency(firstFamily.currency || 'USD');
       }
     } catch (error) {
       console.error('Error fetching families:', error);
@@ -97,7 +106,14 @@ function Dashboard() {
           <h1>Dashboard</h1>
           <select
             value={familyId}
-            onChange={(e) => setFamilyId(Number(e.target.value))}
+            onChange={(e) => {
+              const newFamilyId = Number(e.target.value);
+              setFamilyId(newFamilyId);
+              const selectedFamily = families.find(f => f.id === newFamilyId);
+              if (selectedFamily) {
+                setCurrency(selectedFamily.currency || 'USD');
+              }
+            }}
             className="family-select"
           >
             {families.map(f => (
@@ -124,14 +140,14 @@ function Dashboard() {
           <div className="card-icon">💰</div>
           <div className="card-content">
             <h3>Income</h3>
-            <p className="amount">${summary.totalIncome.toFixed(2)}</p>
+            <p className="amount">{formatCurrency(summary.totalIncome, currency)}</p>
           </div>
         </div>
         <div className="summary-card expense">
           <div className="card-icon">💸</div>
           <div className="card-content">
             <h3>Expenses</h3>
-            <p className="amount">${summary.totalExpenses.toFixed(2)}</p>
+            <p className="amount">{formatCurrency(summary.totalExpenses, currency)}</p>
             {summary.expenseBudget > 0 && (
               <p className="budget-info">
                 {summary.expenseBudgetUsed.toFixed(1)}% of budget
@@ -144,7 +160,7 @@ function Dashboard() {
           <div className="card-content">
             <h3>Balance</h3>
             <p className={`amount ${summary.balance >= 0 ? 'positive' : 'negative'}`}>
-              ${summary.balance.toFixed(2)}
+              {formatCurrency(summary.balance, currency)}
             </p>
           </div>
         </div>
@@ -215,7 +231,7 @@ function Dashboard() {
                     </div>
                   </div>
                   <div className={`transaction-amount ${transaction.type}`}>
-                    {transaction.type === 'expense' ? '-' : '+'}${parseFloat(transaction.amount).toFixed(2)}
+                    {transaction.type === 'expense' ? '-' : '+'}{formatCurrency(parseFloat(transaction.amount), currency)}
                   </div>
                 </div>
               ))}
@@ -236,7 +252,7 @@ function Dashboard() {
                     <div className="goal-header">
                       <h3>{goal.name}</h3>
                       <span className="goal-amount">
-                        ${parseFloat(goal.current_amount).toFixed(2)} / ${parseFloat(goal.target_amount).toFixed(2)}
+                        {formatCurrency(parseFloat(goal.current_amount), currency)} / {formatCurrency(parseFloat(goal.target_amount), currency)}
                       </span>
                     </div>
                     <div className="progress-bar">

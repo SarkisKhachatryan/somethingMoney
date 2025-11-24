@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { formatCurrency } from '../utils/currency';
+import { useCurrency } from '../hooks/useCurrency';
 import './Transactions.css';
 
 function Transactions() {
@@ -17,6 +19,7 @@ function Transactions() {
     description: '',
     date: new Date().toISOString().split('T')[0]
   });
+  const currency = useCurrency(familyId);
 
   useEffect(() => {
     fetchFamilies();
@@ -160,7 +163,7 @@ function Transactions() {
               </div>
               <div className="transaction-actions">
                 <div className={`transaction-amount ${transaction.type}`}>
-                  {transaction.type === 'expense' ? '-' : '+'}${parseFloat(transaction.amount).toFixed(2)}
+                  {transaction.type === 'expense' ? '-' : '+'}{formatCurrency(parseFloat(transaction.amount), currency)}
                 </div>
                 <div className="action-buttons">
                   <button onClick={() => handleEdit(transaction)} className="icon-btn">✏️</button>

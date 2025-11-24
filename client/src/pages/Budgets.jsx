@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { formatCurrency } from '../utils/currency';
+import { useCurrency } from '../hooks/useCurrency';
 import './Budgets.css';
 
 function Budgets() {
@@ -13,6 +15,7 @@ function Budgets() {
   const [showModal, setShowModal] = useState(false);
   const [editingBudget, setEditingBudget] = useState(null);
   const [formData, setFormData] = useState({ categoryId: '', amount: '' });
+  const currency = useCurrency(familyId);
 
   useEffect(() => {
     fetchFamilies();
@@ -157,7 +160,7 @@ function Budgets() {
               </div>
               {budget ? (
                 <div className="budget-amount">
-                  ${parseFloat(budget.amount).toFixed(2)}
+                  {formatCurrency(budget.amount, currency)}
                 </div>
               ) : (
                 <div className="no-budget">

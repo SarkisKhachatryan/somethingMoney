@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { formatCurrency } from '../utils/currency';
+import { useCurrency } from '../hooks/useCurrency';
 import './Recurring.css';
 
 function Recurring() {
@@ -21,6 +23,7 @@ function Recurring() {
     dayOfMonth: new Date().getDate(),
     dayOfWeek: new Date().getDay()
   });
+  const currency = useCurrency(familyId);
 
   useEffect(() => {
     fetchFamilies();
@@ -220,7 +223,7 @@ function Recurring() {
                   <div className="schedule-item">
                     <strong>Amount:</strong> 
                     <span className={`amount ${item.type}`}>
-                      {item.type === 'expense' ? '-' : '+'}${parseFloat(item.amount).toFixed(2)}
+                      {item.type === 'expense' ? '-' : '+'}{formatCurrency(item.amount, currency)}
                     </span>
                   </div>
                   <div className="schedule-item">

@@ -11,6 +11,7 @@ import goalRoutes from './routes/goal.js';
 import dashboardRoutes from './routes/dashboard.js';
 import notificationRoutes from './routes/notification.js';
 import recurringRoutes from './routes/recurring.js';
+import currencyRoutes from './routes/currency.js';
 
 dotenv.config();
 
@@ -33,6 +34,7 @@ initDatabase().then(() => {
   app.use('/api/dashboard', dashboardRoutes);
   app.use('/api/notifications', notificationRoutes);
   app.use('/api/recurring', recurringRoutes);
+  app.use('/api/currency', currencyRoutes);
 
   // Health check
   app.get('/api/health', (req, res) => {

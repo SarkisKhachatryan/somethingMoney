@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { formatCurrency } from '../utils/currency';
+import { useCurrency } from '../hooks/useCurrency';
 import './Goals.css';
 
 function Goals() {
@@ -16,6 +18,7 @@ function Goals() {
     targetDate: '',
     description: ''
   });
+  const currency = useCurrency(familyId);
 
   useEffect(() => {
     fetchFamilies();
@@ -151,8 +154,8 @@ function Goals() {
                 )}
                 <div className="goal-progress">
                   <div className="progress-info">
-                    <span className="current-amount">${parseFloat(goal.current_amount).toFixed(2)}</span>
-                    <span className="target-amount">of ${parseFloat(goal.target_amount).toFixed(2)}</span>
+                    <span className="current-amount">{formatCurrency(goal.current_amount, currency)}</span>
+                    <span className="target-amount">of {formatCurrency(goal.target_amount, currency)}</span>
                   </div>
                   <div className="progress-bar">
                     <div

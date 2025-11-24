@@ -8,14 +8,17 @@ router.use(authenticateToken);
 // Create family
 router.post('/', async (req, res) => {
   try {
-    const { name } = req.body;
+    const { name, currency = 'USD' } = req.body;
     const userId = req.user.userId;
 
     if (!name) {
       return res.status(400).json({ error: 'Family name is required' });
     }
 
-    const result = await dbRun('INSERT INTO families (name) VALUES (?)', [name]);
+    const validCurrencies = ['USD', 'EUR', 'AMD', 'RUB'];
+    const familyCurrency = validCurrencies.includes(currency) ? currency : 'USD';
+
+    const result = await dbRun('INSERT INTO families (name, currency) VALUES (?, ?)', [name, familyCurrency]);
     const familyId = result.lastID;
 
     // Add creator as owner
@@ -77,6 +80,38 @@ router.get('/:id', async (req, res) => {
     res.json({ family, members, userRole: member.role });
   } catch (error) {
     console.error('Get family error:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Update family currency
+router.put('/:id/currency', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { currency } = req.body;
+    const userId = req.user.userId;
+
+    const validCurrencies = ['USD', 'EUR', 'AMD', 'RUB'];
+    if (!validCurrencies.includes(currency)) {
+      return res.status(400).json({ error: 'Invalid currency' });
+    }
+
+    // Check if user is owner or admin
+    const member = await dbGet(
+      'SELECT role FROM family_members WHERE family_id = ? AND user_id = ?',
+      [id, userId]
+    );
+
+    if (!member || !['owner', 'admin'].includes(member.role)) {
+      return res.status(403).json({ error: 'Only owners and admins can change currency' });
+    }
+
+    await dbRun('UPDATE families SET currency = ? WHERE id = ?', [currency, id]);
+    const family = await dbGet('SELECT * FROM families WHERE id = ?', [id]);
+
+    res.json({ family });
+  } catch (error) {
+    console.error('Update currency error:', error);
     res.status(500).json({ error: 'Server error' });
   }
 });
