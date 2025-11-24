@@ -300,7 +300,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [ ] Bank account integration
 - [ ] Advanced analytics and forecasting
 - [ ] Multi-currency support
-- [ ] Dark mode
 
 ---
 
