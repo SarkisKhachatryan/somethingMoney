@@ -10,19 +10,19 @@
 }
 
 .transaction-card {
-  background: white;
+  background: var(--bg-secondary);
   border-radius: 12px;
   padding: 1.5rem;
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--card-shadow);
   transition: transform 0.2s;
 }
 
 .transaction-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--card-shadow-hover);
 }
 
 .transaction-details {
@@ -31,14 +31,14 @@
 
 .transaction-name {
   font-weight: 600;
-  color: #333;
+  color: var(--text-primary);
   font-size: 1.1rem;
   margin-bottom: 0.5rem;
 }
 
 .transaction-meta {
   font-size: 0.9rem;
-  color: #666;
+  color: var(--text-secondary);
 }
 
 .transaction-actions {
@@ -70,12 +70,12 @@
 .empty-state {
   text-align: center;
   padding: 4rem 2rem;
-  background: white;
+  background: var(--bg-secondary);
   border-radius: 12px;
 }
 
 .empty-state p {
   font-size: 1.1rem;
-  color: #999;
+  color: var(--text-tertiary);
 }
 

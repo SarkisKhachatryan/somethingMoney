@@ -10,16 +10,16 @@
 }
 
 .goal-card {
-  background: white;
+  background: var(--bg-secondary);
   border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--card-shadow);
   transition: transform 0.2s;
 }
 
 .goal-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--card-shadow-hover);
 }
 
 .goal-card.complete {
@@ -44,7 +44,7 @@
 }
 
 .goal-description {
-  color: #666;
+  color: var(--text-secondary);
   margin-bottom: 1rem;
   font-size: 0.95rem;
 }
@@ -68,7 +68,7 @@
 
 .target-amount {
   font-size: 1rem;
-  color: #666;
+  color: var(--text-secondary);
 }
 
 .progress-bar {
@@ -92,14 +92,14 @@
 
 .progress-percentage {
   font-size: 0.9rem;
-  color: #666;
+  color: var(--text-secondary);
   text-align: right;
 }
 
 .goal-date,
 .goal-owner {
   font-size: 0.85rem;
-  color: #999;
+  color: var(--text-tertiary);
   margin-top: 0.5rem;
 }
 
@@ -107,19 +107,19 @@
   grid-column: 1 / -1;
   text-align: center;
   padding: 4rem 2rem;
-  background: white;
+  background: var(--bg-secondary);
   border-radius: 12px;
 }
 
 .empty-state p {
   font-size: 1.1rem;
-  color: #999;
+  color: var(--text-tertiary);
 }
 
 .modal-content textarea {
   width: 100%;
   padding: 0.75rem;
-  border: 2px solid #e5e7eb;
+  border: 2px solid var(--border-color);
   border-radius: 6px;
   font-size: 1rem;
   font-family: inherit;

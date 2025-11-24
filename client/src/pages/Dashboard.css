@@ -14,17 +14,19 @@
 
 .dashboard-header h1 {
   font-size: 2rem;
-  color: #1e3a8a;
+  color: var(--text-primary);
   margin-right: 1rem;
 }
 
 .family-select {
   padding: 0.5rem 1rem;
-  border: 2px solid #e5e7eb;
+  border: 2px solid var(--border-color);
   border-radius: 6px;
   font-size: 1rem;
-  background: white;
+  background: var(--input-bg);
+  color: var(--text-primary);
   cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .date-selector {
@@ -34,11 +36,13 @@
 
 .date-selector select {
   padding: 0.5rem;
-  border: 2px solid #e5e7eb;
+  border: 2px solid var(--border-color);
   border-radius: 6px;
   font-size: 0.9rem;
-  background: white;
+  background: var(--input-bg);
+  color: var(--text-primary);
   cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .summary-cards {
@@ -49,19 +53,19 @@
 }
 
 .summary-card {
-  background: white;
+  background: var(--bg-secondary);
   border-radius: 12px;
   padding: 1.5rem;
   display: flex;
   align-items: center;
   gap: 1rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.2s, background-color 0.3s ease;
 }
 
 .summary-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--card-shadow-hover);
 }
 
 .card-icon {
@@ -70,7 +74,7 @@
 
 .card-content h3 {
   font-size: 0.9rem;
-  color: #666;
+  color: var(--text-secondary);
   margin-bottom: 0.5rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -79,7 +83,7 @@
 .card-content .amount {
   font-size: 1.8rem;
   font-weight: 700;
-  color: #1e3a8a;
+  color: var(--text-primary);
 }
 
 .card-content .amount.positive {
@@ -92,7 +96,7 @@
 
 .budget-info {
   font-size: 0.85rem;
-  color: #666;
+  color: var(--text-secondary);
   margin-top: 0.25rem;
 }
 
@@ -104,21 +108,22 @@
 }
 
 .dashboard-section {
-  background: white;
+  background: var(--bg-secondary);
   border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--card-shadow);
+  transition: background-color 0.3s ease;
 }
 
 .dashboard-section h2 {
   font-size: 1.3rem;
-  color: #1e3a8a;
+  color: var(--text-primary);
   margin-bottom: 1.5rem;
 }
 
 .empty-message {
   text-align: center;
-  color: #999;
+  color: var(--text-tertiary);
   padding: 2rem;
 }
 
@@ -133,8 +138,9 @@
   align-items: center;
   gap: 1rem;
   padding: 1rem;
-  background: #f9fafb;
+  background: var(--bg-tertiary);
   border-radius: 8px;
+  transition: background-color 0.3s ease;
 }
 
 .transaction-icon {
@@ -153,13 +159,13 @@
 
 .transaction-name {
   font-weight: 600;
-  color: #333;
+  color: var(--text-primary);
   margin-bottom: 0.25rem;
 }
 
 .transaction-meta {
   font-size: 0.85rem;
-  color: #666;
+  color: var(--text-secondary);
 }
 
 .transaction-amount {
@@ -183,8 +189,9 @@
 
 .goal-item {
   padding: 1rem;
-  background: #f9fafb;
+  background: var(--bg-tertiary);
   border-radius: 8px;
+  transition: background-color 0.3s ease;
 }
 
 .goal-header {
@@ -196,18 +203,18 @@
 
 .goal-header h3 {
   font-size: 1rem;
-  color: #333;
+  color: var(--text-primary);
 }
 
 .goal-amount {
   font-weight: 600;
-  color: #1e3a8a;
+  color: var(--text-primary);
 }
 
 .progress-bar {
   width: 100%;
   height: 8px;
-  background: #e5e7eb;
+  background: var(--border-color);
   border-radius: 4px;
   overflow: hidden;
   margin-bottom: 0.5rem;
@@ -221,7 +228,7 @@
 
 .goal-date {
   font-size: 0.85rem;
-  color: #666;
+  color: var(--text-secondary);
 }
 
 .empty-state {
@@ -231,13 +238,13 @@
 
 .empty-state h2 {
   font-size: 2rem;
-  color: #1e3a8a;
+  color: var(--text-primary);
   margin-bottom: 1rem;
 }
 
 .empty-state p {
   font-size: 1.1rem;
-  color: #666;
+  color: var(--text-secondary);
   margin-bottom: 2rem;
 }
 

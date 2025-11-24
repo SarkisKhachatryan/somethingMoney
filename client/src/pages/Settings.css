@@ -10,10 +10,10 @@
 }
 
 .settings-section {
-  background: white;
+  background: var(--bg-secondary);
   border-radius: 12px;
   padding: 2rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--card-shadow);
 }
 
 .section-header {
@@ -39,19 +39,19 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  background: #f9fafb;
+  background: var(--bg-tertiary);
   border-radius: 8px;
 }
 
 .member-name {
   font-weight: 600;
-  color: #333;
+  color: var(--text-primary);
   margin-bottom: 0.25rem;
 }
 
 .member-email {
   font-size: 0.9rem;
-  color: #666;
+  color: var(--text-secondary);
 }
 
 .member-role {
@@ -88,7 +88,7 @@
   align-items: center;
   gap: 0.75rem;
   padding: 1rem;
-  background: #f9fafb;
+  background: var(--bg-tertiary);
   border-radius: 8px;
 }
 
@@ -99,7 +99,7 @@
 .category-name {
   flex: 1;
   font-weight: 500;
-  color: #333;
+  color: var(--text-primary);
 }
 
 .delete-btn {
@@ -123,8 +123,8 @@
 
 .icon-option {
   padding: 0.75rem;
-  background: #f9fafb;
-  border: 2px solid #e5e7eb;
+  background: var(--bg-tertiary);
+  border: 2px solid var(--border-color);
   border-radius: 6px;
   font-size: 1.5rem;
   cursor: pointer;

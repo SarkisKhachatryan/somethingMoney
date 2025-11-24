@@ -14,7 +14,7 @@
 
 .page-header h1 {
   font-size: 2rem;
-  color: #1e3a8a;
+  color: var(--text-primary);
 }
 
 .header-controls {
@@ -31,16 +31,16 @@
 }
 
 .budget-card {
-  background: white;
+  background: var(--bg-secondary);
   border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--card-shadow);
   transition: transform 0.2s;
 }
 
 .budget-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--card-shadow-hover);
 }
 
 .budget-header {
@@ -62,7 +62,7 @@
 
 .category-info h3 {
   font-size: 1.1rem;
-  color: #333;
+  color: var(--text-primary);
 }
 
 .budget-actions {
@@ -87,7 +87,7 @@
 .budget-amount {
   font-size: 2rem;
   font-weight: 700;
-  color: #1e3a8a;
+  color: var(--text-primary);
 }
 
 .no-budget {
@@ -96,7 +96,7 @@
 }
 
 .no-budget p {
-  color: #999;
+  color: var(--text-tertiary);
   margin-bottom: 0.75rem;
 }
 
@@ -121,7 +121,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--modal-overlay);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -129,7 +129,7 @@
 }
 
 .modal-content {
-  background: white;
+  background: var(--bg-secondary);
   border-radius: 12px;
   padding: 2rem;
   width: 90%;
@@ -140,7 +140,7 @@
 
 .modal-content h2 {
   font-size: 1.5rem;
-  color: #1e3a8a;
+  color: var(--text-primary);
   margin-bottom: 1.5rem;
 }
 
@@ -151,7 +151,7 @@
 .modal-content label {
   display: block;
   margin-bottom: 0.5rem;
-  color: #333;
+  color: var(--text-primary);
   font-weight: 500;
 }
 
@@ -159,7 +159,7 @@
 .modal-content select {
   width: 100%;
   padding: 0.75rem;
-  border: 2px solid #e5e7eb;
+  border: 2px solid var(--border-color);
   border-radius: 6px;
   font-size: 1rem;
 }
@@ -180,7 +180,7 @@
 .secondary-btn {
   padding: 0.75rem 1.5rem;
   background: #e5e7eb;
-  color: #333;
+  color: var(--text-primary);
   border: none;
   border-radius: 6px;
   cursor: pointer;

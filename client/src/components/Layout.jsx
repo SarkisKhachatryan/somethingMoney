@@ -1,11 +1,13 @@
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import './Layout.css';
 
 function Layout() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, logout } = useAuth();
+  const { isDark, toggleTheme } = useTheme();
 
   const handleLogout = () => {
     logout();
@@ -41,6 +43,11 @@ function Layout() {
           ))}
         </ul>
         <div className="sidebar-footer">
+          <div className="theme-toggle-container">
+            <button className="theme-toggle" onClick={toggleTheme} title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}>
+              {isDark ? '☀️' : '🌙'}
+            </button>
+          </div>
           <div className="user-info">
             <span className="user-name">{user?.name}</span>
             <span className="user-email">{user?.email}</span>

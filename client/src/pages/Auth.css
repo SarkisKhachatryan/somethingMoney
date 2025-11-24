@@ -8,12 +8,13 @@
 }
 
 .auth-card {
-  background: white;
+  background: var(--bg-secondary);
   border-radius: 12px;
   padding: 3rem;
   width: 100%;
   max-width: 400px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease;
 }
 
 .auth-card h1 {
@@ -27,7 +28,7 @@
   text-align: center;
   font-size: 1.5rem;
   margin-bottom: 2rem;
-  color: #666;
+  color: var(--text-secondary);
   font-weight: 400;
 }
 
@@ -38,17 +39,19 @@
 .form-group label {
   display: block;
   margin-bottom: 0.5rem;
-  color: #333;
+  color: var(--text-primary);
   font-weight: 500;
 }
 
 .form-group input {
   width: 100%;
   padding: 0.75rem;
-  border: 2px solid #e5e7eb;
+  background: var(--input-bg);
+  border: 2px solid var(--input-border);
   border-radius: 6px;
   font-size: 1rem;
-  transition: border-color 0.2s;
+  color: var(--text-primary);
+  transition: border-color 0.2s, background-color 0.3s ease;
 }
 
 .form-group input:focus {
@@ -57,8 +60,9 @@
 }
 
 .form-group input:disabled {
-  background: #f3f4f6;
+  background: var(--bg-tertiary);
   cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .submit-btn {
@@ -96,7 +100,7 @@
 .auth-link {
   text-align: center;
   margin-top: 1.5rem;
-  color: #666;
+  color: var(--text-secondary);
 }
 
 .auth-link a {
