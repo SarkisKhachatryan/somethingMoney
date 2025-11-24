@@ -16,6 +16,7 @@ A comprehensive web application for tracking family budgets, expenses, and finan
 - 🔄 **Recurring Transactions**: Set up recurring bills, subscriptions, and income with automatic processing
 - 🎯 **Goal Setting**: Set financial goals with progress tracking and target dates
 - 📈 **Reports & Analytics**: Visual reports with charts showing spending by category, budget vs actual
+- 🌙 **Dark Mode**: Beautiful dark theme with system preference detection and persistent settings
 - 🔔 **Notifications**: Basic notification system for budget alerts and reminders
 - 🎨 **Customizable Categories**: Create expense and income categories with custom icons and colors
 - 📱 **Responsive Design**: Modern, mobile-friendly UI that works on all devices
@@ -225,6 +226,13 @@ The application uses SQLite with the following main tables:
 - Create custom categories
 - Customize category icons and colors
 - Role-based access control
+
+### Dark Mode
+- Toggle between light and dark themes
+- Automatic system preference detection
+- Persistent theme preference (saved in localStorage)
+- Smooth color transitions
+- All UI components support both themes
 
 ## 🔒 Security Features
 
