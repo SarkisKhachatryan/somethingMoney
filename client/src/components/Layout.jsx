@@ -16,6 +16,7 @@ function Layout() {
     { path: '/', label: 'Dashboard', icon: '📊' },
     { path: '/budgets', label: 'Budgets', icon: '💰' },
     { path: '/transactions', label: 'Transactions', icon: '💳' },
+    { path: '/recurring', label: 'Recurring', icon: '🔄' },
     { path: '/goals', label: 'Goals', icon: '🎯' },
     { path: '/settings', label: 'Settings', icon: '⚙️' }
   ];

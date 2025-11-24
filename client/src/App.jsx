@@ -5,6 +5,7 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Budgets from './pages/Budgets';
 import Transactions from './pages/Transactions';
+import Recurring from './pages/Recurring';
 import Goals from './pages/Goals';
 import Settings from './pages/Settings';
 import Layout from './components/Layout';
@@ -39,6 +40,7 @@ function AppRoutes() {
         <Route index element={<Dashboard />} />
         <Route path="budgets" element={<Budgets />} />
         <Route path="transactions" element={<Transactions />} />
+        <Route path="recurring" element={<Recurring />} />
         <Route path="goals" element={<Goals />} />
         <Route path="settings" element={<Settings />} />
       </Route>

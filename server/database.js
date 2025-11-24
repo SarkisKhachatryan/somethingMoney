@@ -152,6 +152,30 @@ export async function initDatabase() {
     )
   `);
 
+  // Recurring transactions table
+  await dbRun(`
+    CREATE TABLE IF NOT EXISTS recurring_transactions (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      family_id INTEGER NOT NULL,
+      user_id INTEGER NOT NULL,
+      category_id INTEGER NOT NULL,
+      type TEXT NOT NULL CHECK(type IN ('expense', 'income')),
+      amount DECIMAL(10, 2) NOT NULL,
+      description TEXT,
+      frequency TEXT NOT NULL CHECK(frequency IN ('daily', 'weekly', 'monthly', 'yearly')),
+      start_date DATE NOT NULL,
+      end_date DATE,
+      next_occurrence DATE NOT NULL,
+      day_of_month INTEGER,
+      day_of_week INTEGER,
+      is_active BOOLEAN DEFAULT 1,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (family_id) REFERENCES families(id) ON DELETE CASCADE,
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+      FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
+    )
+  `);
+
   console.log('Database initialized successfully');
 }
 
