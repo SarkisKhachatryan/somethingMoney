@@ -232,7 +232,15 @@ The application uses SQLite with the following main tables:
 - Manage family members
 - Create custom categories
 - Customize category icons and colors
+- Set default currency for family (USD, EUR, AMD, RUB)
 - Role-based access control
+
+### Multi-Currency Support
+- Support for USD ($), EUR (€), AMD (֏), and RUB (₽)
+- Real-time exchange rates from exchangerate-api.com
+- Automatic currency formatting across all pages
+- Exchange rate caching (1 hour TTL)
+- Set currency per family in Settings
 
 ### Dark Mode
 - Toggle between light and dark themes
@@ -307,7 +315,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [ ] Mobile app (React Native)
 - [ ] Bank account integration
 - [ ] Advanced analytics and forecasting
-- [ ] Multi-currency support
 
 ---
 
