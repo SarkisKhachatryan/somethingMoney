@@ -133,6 +133,7 @@ The application uses SQLite with the following main tables:
 - **categories** - Expense and income categories
 - **budgets** - Monthly budget allocations
 - **transactions** - Income and expense records
+- **recurring_transactions** - Recurring bills, subscriptions, and income
 - **goals** - Financial goals
 - **notifications** - System notifications
 
