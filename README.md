@@ -14,6 +14,7 @@ A comprehensive web application for tracking family budgets, expenses, and finan
 - 📊 **Expense Tracking**: Track expenses in real-time with categories, descriptions, and dates
 - 💵 **Income Tracking**: Record and categorize various income sources
 - 🔄 **Recurring Transactions**: Set up recurring bills, subscriptions, and income with automatic processing
+- 💱 **Multi-Currency Support**: Support for USD, EUR, AMD, and RUB with real-time exchange rates
 - 🎯 **Goal Setting**: Set financial goals with progress tracking and target dates
 - 📈 **Reports & Analytics**: Visual reports with charts showing spending by category, budget vs actual
 - 🌙 **Dark Mode**: Beautiful dark theme with system preference detection and persistent settings
@@ -181,6 +182,12 @@ The application uses SQLite with the following main tables:
 - `DELETE /api/recurring/:id` - Delete recurring transaction
 - `POST /api/recurring/process` - Process due recurring transactions
 
+### Currency
+- `GET /api/currency/rates` - Get exchange rates
+- `GET /api/currency/convert` - Convert amount between currencies
+- `GET /api/currency/family/:familyId` - Get family currency info
+- `PUT /api/family/:id/currency` - Update family currency
+
 ### Dashboard
 - `GET /api/dashboard/family/:familyId` - Get dashboard data
 
@@ -294,6 +301,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - [x] Recurring transactions ✅
 - [x] Dark mode ✅
+- [x] Multi-currency support ✅
 - [ ] Bill reminders with notifications
 - [ ] Export data (CSV, PDF)
 - [ ] Mobile app (React Native)
