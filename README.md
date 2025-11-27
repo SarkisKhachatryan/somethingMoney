@@ -19,6 +19,7 @@ A comprehensive web application for tracking family budgets, expenses, and finan
 - 📈 **Reports & Analytics**: Visual reports with charts showing spending by category, budget vs actual
 - 🌙 **Dark Mode**: Beautiful dark theme with system preference detection and persistent settings
 - 🔔 **Bill Reminders & Notifications**: Automatic bill reminders for upcoming recurring transactions and budget alerts
+- 📥 **Data Export**: Export transactions to CSV and PDF, export budget reports to PDF
 - 🎨 **Customizable Categories**: Create expense and income categories with custom icons and colors
 - 📱 **Responsive Design**: Modern, mobile-friendly UI that works on all devices
 - 🔒 **Secure**: JWT-based authentication with password hashing
@@ -194,6 +195,11 @@ The application uses SQLite with the following main tables:
 - `PUT /api/notifications/family/:familyId/read-all` - Mark all notifications as read
 - `DELETE /api/notifications/:id` - Delete notification
 
+### Export
+- `GET /api/export/transactions/csv` - Export transactions to CSV
+- `GET /api/export/transactions/pdf` - Export transactions to PDF
+- `GET /api/export/budget/pdf` - Export budget report to PDF
+
 ### Dashboard
 - `GET /api/dashboard/family/:familyId` - Get dashboard data
 
@@ -256,6 +262,14 @@ The application uses SQLite with the following main tables:
 - Delete notifications
 - Real-time notification updates
 - Notification types: bill reminders, budget alerts, goal milestones
+
+### Data Export
+- Export transactions to CSV format
+- Export transactions to PDF with summary and detailed table
+- Export budget reports to PDF with category breakdown
+- Date range filtering for transaction exports
+- Currency-aware exports with proper formatting
+- One-click export buttons in Transactions, Budgets, and Dashboard pages
 
 ### Dark Mode
 - Toggle between light and dark themes
@@ -326,7 +340,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [x] Dark mode ✅
 - [x] Multi-currency support ✅
 - [x] Bill reminders with notifications ✅
-- [ ] Export data (CSV, PDF)
+- [x] Export data (CSV, PDF) ✅
 - [ ] Mobile app (React Native)
 - [ ] Bank account integration
 - [ ] Advanced analytics and forecasting
