@@ -55,6 +55,8 @@ describe('Budgets Module - Black Box Tests', () => {
   });
 
   describe('POST /api/budget', () => {
+    // Test: Verify successful creation of monthly budget with all required fields
+    // Expected: Returns 201 status with budget object containing correct amount, month, and year
     test('should create budget with valid data', async () => {
       const month = new Date().getMonth() + 1;
       const year = new Date().getFullYear();
@@ -77,6 +79,8 @@ describe('Budgets Module - Black Box Tests', () => {
       expect(response.body.budget.year).toBe(year);
     });
 
+    // Test: Verify validation rejects budgets missing required fields (amount, month, year)
+    // Expected: Returns 400 status with error message
     test('should reject budget with missing required fields', async () => {
       const response = await request(app)
         .post('/api/budget')
@@ -91,6 +95,8 @@ describe('Budgets Module - Black Box Tests', () => {
       expect(response.body).toHaveProperty('error');
     });
 
+    // Test: Verify validation rejects invalid month values (must be 1-12)
+    // Expected: Returns 400 status with error message
     test('should reject budget with invalid month', async () => {
       const response = await request(app)
         .post('/api/budget')
@@ -107,6 +113,8 @@ describe('Budgets Module - Black Box Tests', () => {
       expect(response.body).toHaveProperty('error');
     });
 
+    // Test: Verify validation prevents negative budget amounts
+    // Expected: Returns 400 status with error message
     test('should reject budget with negative amount', async () => {
       const response = await request(app)
         .post('/api/budget')
@@ -141,6 +149,8 @@ describe('Budgets Module - Black Box Tests', () => {
         });
     });
 
+    // Test: Verify retrieval of budgets for a specific family and month
+    // Expected: Returns 200 status with array of budgets for the specified month/year
     test('should retrieve budgets for family and month', async () => {
       const month = new Date().getMonth() + 1;
       const year = new Date().getFullYear();
@@ -156,6 +166,8 @@ describe('Budgets Module - Black Box Tests', () => {
       expect(response.body.budgets.length).toBeGreaterThan(0);
     });
 
+    // Test: Verify month/year filtering returns only budgets for specified period
+    // Expected: Returns 200 status with budgets filtered by month and year
     test('should filter budgets by month and year', async () => {
       const nextMonth = new Date().getMonth() + 2;
       const year = new Date().getFullYear();
@@ -205,6 +217,8 @@ describe('Budgets Module - Black Box Tests', () => {
       budgetId = response.body.budget.id;
     });
 
+    // Test: Verify successful update of budget amount
+    // Expected: Returns 200 status with updated budget containing new amount
     test('should update budget amount', async () => {
       const response = await request(app)
         .put(`/api/budget/${budgetId}`)
@@ -215,6 +229,8 @@ describe('Budgets Module - Black Box Tests', () => {
       expect(parseFloat(response.body.budget.amount)).toBe(350.00);
     });
 
+    // Test: Verify update fails gracefully for non-existent budget IDs
+    // Expected: Returns 404 status with error message
     test('should reject update of non-existent budget', async () => {
       const response = await request(app)
         .put('/api/budget/99999')
@@ -246,6 +262,8 @@ describe('Budgets Module - Black Box Tests', () => {
       budgetId = response.body.budget.id;
     });
 
+    // Test: Verify successful deletion of budget and removal from database
+    // Expected: Returns 200 status, and budget is no longer retrievable
     test('should delete budget', async () => {
       await request(app)
         .delete(`/api/budget/${budgetId}`)
