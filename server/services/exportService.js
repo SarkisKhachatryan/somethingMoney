@@ -1,6 +1,23 @@
 import PDFDocument from 'pdfkit';
 import { dbAll, dbGet } from '../database.js';
-import { formatCurrency, getCurrencySymbol } from './exchangeRate.js';
+
+// Currency formatting helper
+function formatCurrency(amount, currency) {
+  const symbols = {
+    USD: '$',
+    EUR: '€',
+    AMD: '֏',
+    RUB: '₽'
+  };
+
+  const symbol = symbols[currency] || currency;
+  const formatted = parseFloat(amount).toLocaleString('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+
+  return `${symbol}${formatted}`;
+}
 
 // Export transactions to CSV
 export async function exportTransactionsToCSV(familyId, startDate, endDate, currency = 'USD') {
