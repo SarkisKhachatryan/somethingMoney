@@ -40,6 +40,11 @@ describe('Goals Module - Black Box Tests', () => {
   });
 
   describe('POST /api/goals', () => {
+    // Test: Verify successful creation of financial goal with all required fields
+    // Logic: Goals help users track savings progress. This test verifies that goals
+    //        can be created with name, target amount, current amount, and target date.
+    //        The target date is set 6 months in the future to ensure it's valid.
+    // Expected: Returns 201 status with goal object containing correct amounts and dates
     test('should create goal with valid data', async () => {
       const targetDate = new Date();
       targetDate.setMonth(targetDate.getMonth() + 6);
@@ -63,6 +68,10 @@ describe('Goals Module - Black Box Tests', () => {
       expect(parseFloat(response.body.goal.current_amount)).toBe(0.00);
     });
 
+    // Test: Verify validation rejects goals missing required fields (name, targetAmount, etc.)
+    // Logic: Goals require essential fields to function. Without name, target amount,
+    //        and target date, a goal cannot be properly tracked or displayed.
+    // Expected: Returns 400 status with error message indicating missing fields
     test('should reject goal with missing required fields', async () => {
       const response = await request(app)
         .post('/api/goals')
@@ -76,6 +85,11 @@ describe('Goals Module - Black Box Tests', () => {
       expect(response.body).toHaveProperty('error');
     });
 
+    // Test: Verify validation prevents creating goals where current amount exceeds target
+    // Logic: A goal's target amount must be greater than or equal to current amount.
+    //        If current is already higher, the goal is already achieved, which doesn't
+    //        make sense for a new goal. This tests business logic validation.
+    // Expected: Returns 400 status with error message
     test('should reject goal with target amount less than current amount', async () => {
       const targetDate = new Date();
       targetDate.setMonth(targetDate.getMonth() + 6);
@@ -95,6 +109,10 @@ describe('Goals Module - Black Box Tests', () => {
       expect(response.body).toHaveProperty('error');
     });
 
+    // Test: Verify validation prevents creating goals with target dates in the past
+    // Logic: Goals should have future target dates to be meaningful. A past date
+    //        would mean the goal deadline has already passed, which is invalid.
+    // Expected: Returns 400 status with error message
     test('should reject goal with past target date', async () => {
       const pastDate = new Date();
       pastDate.setMonth(pastDate.getMonth() - 1);
@@ -132,6 +150,10 @@ describe('Goals Module - Black Box Tests', () => {
         });
     });
 
+    // Test: Verify retrieval of all goals for a family
+    // Logic: Families may have multiple financial goals. This endpoint should return
+    //        all goals associated with the family, allowing users to see their progress.
+    // Expected: Returns 200 status with array of goals for the family
     test('should retrieve all goals for family', async () => {
       const response = await request(app)
         .get(`/api/goals/family/${familyId}`)
@@ -164,6 +186,10 @@ describe('Goals Module - Black Box Tests', () => {
       goalId = response.body.goal.id;
     });
 
+    // Test: Verify successful update of goal's current amount (progress tracking)
+    // Logic: As users save money, they need to update the current amount to track
+    //        progress. This tests that current amount can be updated independently.
+    // Expected: Returns 200 status with updated goal containing new current amount
     test('should update goal current amount', async () => {
       const response = await request(app)
         .put(`/api/goals/${goalId}`)
@@ -174,6 +200,10 @@ describe('Goals Module - Black Box Tests', () => {
       expect(parseFloat(response.body.goal.current_amount)).toBe(7500.00);
     });
 
+    // Test: Verify successful update of goal's target amount
+    // Logic: Users may want to adjust their savings goals. This tests that the
+    //        target amount can be updated, potentially increasing the goal.
+    // Expected: Returns 200 status with updated goal containing new target amount
     test('should update goal target amount', async () => {
       const response = await request(app)
         .put(`/api/goals/${goalId}`)
@@ -184,6 +214,10 @@ describe('Goals Module - Black Box Tests', () => {
       expect(parseFloat(response.body.goal.target_amount)).toBe(25000.00);
     });
 
+    // Test: Verify validation prevents updating current amount to exceed target amount
+    // Logic: Current amount should never exceed target amount. If it does, the goal
+    //        is over-achieved, which may indicate an error. This tests business logic.
+    // Expected: Returns 400 status with error message
     test('should reject update with current amount exceeding target', async () => {
       const response = await request(app)
         .put(`/api/goals/${goalId}`)
@@ -215,6 +249,11 @@ describe('Goals Module - Black Box Tests', () => {
       goalId = response.body.goal.id;
     });
 
+    // Test: Verify successful deletion of goal and removal from database
+    // Logic: Users may want to remove goals that are no longer relevant. After
+    //        deletion, the goal should no longer appear in the family's goal list.
+    //        This tests both deletion and verifies the goal is actually removed.
+    // Expected: Returns 200 status, and goal is no longer retrievable via GET
     test('should delete goal', async () => {
       await request(app)
         .delete(`/api/goals/${goalId}`)
