@@ -148,27 +148,29 @@ After running coverage, you can view detailed reports:
 
 #### Current Coverage Status
 
-- **Overall Coverage**: **80%** 🎉
-  - Statements: 80%
-  - Branches: 73%
-  - Functions: 93%
-  - Lines: 80%
+- **Overall Coverage**: **86%** 🎉
+  - Statements: 86.06%
+  - Branches: 84.66%
+  - Functions: 95.94%
+  - Lines: 86.03%
 
-**Well Covered Modules** (80%+):
+**Well Covered Modules** (85%+):
 - ✅ Authentication (89%)
 - ✅ Transactions (83%)
 - ✅ Goals (80%)
-- ✅ Dashboard (86%)
+- ✅ Dashboard (90%)
 - ✅ Category routes (84%)
 - ✅ Export routes (87%)
 - ✅ Notification routes (87%)
 - ✅ Export service (94%)
+- ✅ Family routes (86%) ✨
+- ✅ Budget routes (88%) ✨
+- ✅ Recurring routes (84%) ✨
+- ✅ Notification service (86%) ✨
 
-**Partially Covered** (60-80%):
-- ⚠️ Recurring routes (63%)
-- ⚠️ Family routes (70%)
+**Partially Covered** (75-85%):
 - ⚠️ Exchange rate service (76%)
-- ⚠️ Notification service (61%)
+- ⚠️ Currency routes (79%)
 
 See [Coverage Guide](/server/tests/COVERAGE_GUIDE.md) for detailed information on improving coverage.
 
@@ -177,13 +179,15 @@ See [Coverage Guide](/server/tests/COVERAGE_GUIDE.md) for detailed information o
 - **Black Box Tests** (`/server/tests/blackbox/`): Test API endpoints without knowledge of internal implementation
   - Authentication tests (`auth.test.js`)
   - Transaction management tests (`transactions.test.js`)
-  - Budget management tests (`budgets.test.js`)
+  - Budget management tests (`budgets.test.js`, `budgets-additional.test.js`) ✨
   - Goals tests (`goals.test.js`)
-  - Recurring transactions tests (`recurring.test.js`)
-  - Currency routes tests (`currency.test.js`) ✨ NEW
-  - Notification routes tests (`notifications.test.js`) ✨ NEW
-  - Export routes tests (`export.test.js`) ✨ NEW
-  - Category routes tests (`category.test.js`) ✨ NEW
+  - Recurring transactions tests (`recurring.test.js`) ✨
+  - Currency routes tests (`currency.test.js`)
+  - Notification routes tests (`notifications.test.js`)
+  - Export routes tests (`export.test.js`)
+  - Category routes tests (`category.test.js`)
+  - Family routes tests (`family.test.js`) ✨ NEW
+  - Dashboard tests (`dashboard.test.js`) ✨ NEW
 
 - **Service Tests** (`/server/tests/services/`): Test service layer functionality
   - Exchange rate service tests (`exchangeRate.test.js`) ✨ NEW

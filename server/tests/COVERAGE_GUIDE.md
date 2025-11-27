@@ -31,32 +31,32 @@ npm run test:coverage:watch
 
 ## Current Coverage Status
 
-### Overall Coverage: 80% 🎉
-- **Statements**: 80%
-- **Branches**: 73%
-- **Functions**: 93%
-- **Lines**: 80%
+### Overall Coverage: 86% 🎉
+- **Statements**: 86.06%
+- **Branches**: 84.66%
+- **Functions**: 95.94%
+- **Lines**: 86.03%
 
 ### Coverage by Module
 
-#### Well Covered (80%+)
+#### Well Covered (85%+)
 - ✅ `middleware/auth.js` - 90%
 - ✅ `routes/auth.js` - 89%
+- ✅ `routes/dashboard.js` - 90% ✨
+- ✅ `routes/budget.js` - 88% ✨
+- ✅ `routes/family.js` - 86% ✨
+- ✅ `routes/recurring.js` - 84% ✨
+- ✅ `routes/notifications.js` - 87%
+- ✅ `routes/export.js` - 87%
+- ✅ `routes/category.js` - 84%
 - ✅ `routes/transaction.js` - 83%
 - ✅ `routes/goal.js` - 80%
-- ✅ `routes/dashboard.js` - 86%
-- ✅ `routes/category.js` - 84% ✨
-- ✅ `routes/currency.js` - 79% ✨
-- ✅ `routes/notifications.js` - 87% ✨
-- ✅ `routes/export.js` - 87% ✨
-- ✅ `services/exportService.js` - 94% ✨
+- ✅ `services/exportService.js` - 94%
+- ✅ `services/notificationService.js` - 86% ✨
 
-#### Partially Covered (60-80%)
-- ⚠️ `routes/budget.js` - 77%
-- ⚠️ `routes/family.js` - 70%
-- ⚠️ `routes/recurring.js` - 63%
+#### Partially Covered (75-85%)
+- ⚠️ `routes/currency.js` - 79%
 - ⚠️ `services/exchangeRate.js` - 76%
-- ⚠️ `services/notificationService.js` - 61%
 
 ## Coverage Thresholds
 
@@ -82,14 +82,24 @@ These can be adjusted in `package.json` under `jest.coverageThreshold`.
 
 ### Priority Areas
 
-1. **Partially covered routes** (Medium Priority)
-   - `routes/family.js` - Family management (70% → 85%)
-   - `routes/recurring.js` - Recurring transactions (63% → 80%)
-   - `routes/budget.js` - Budget management (77% → 85%)
-
-2. **Partially covered services** (Medium Priority)
-   - `services/notificationService.js` - Notification service (61% → 80%)
+1. **Partially covered services** (High Priority)
    - `services/exchangeRate.js` - Exchange rate service (76% → 85%)
+     - Cache functionality
+     - Fallback rate logic
+     - Error handling
+
+2. **Partially covered routes** (Medium Priority)
+   - `routes/currency.js` - Currency operations (79% → 85%)
+     - Error handling paths
+   - `routes/goal.js` - Goals (80% → 85%)
+     - Error handling paths
+   - `routes/transaction.js` - Transactions (83% → 85%)
+     - Error handling paths
+
+3. **Edge cases and error handling** (Low Priority)
+   - Add error handling tests for all routes
+   - Test boundary conditions
+   - Test invalid input handling
 
 3. **Edge cases and error handling** (Low Priority)
    - Add tests for error paths in well-covered modules
@@ -98,7 +108,12 @@ These can be adjusted in `package.json` under `jest.coverageThreshold`.
 
 ### Recent Improvements ✨
 
-The following modules have been recently added with comprehensive test coverage:
+The following modules have been recently improved with comprehensive test coverage:
+- ✅ `routes/family.js` - 70% → 86% coverage
+- ✅ `routes/recurring.js` - 63% → 84% coverage
+- ✅ `routes/budget.js` - 77% → 88% coverage
+- ✅ `routes/dashboard.js` - 86% → 90% coverage
+- ✅ `services/notificationService.js` - 61% → 86% coverage
 - ✅ `routes/currency.js` - 79% coverage
 - ✅ `routes/export.js` - 87% coverage
 - ✅ `routes/notification.js` - 87% coverage
