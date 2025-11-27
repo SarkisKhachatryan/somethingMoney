@@ -54,25 +54,29 @@ export function convertCurrency(amount, fromCurrency, toCurrency, rates = null) 
     rates = getFallbackRates(fromCurrency);
   }
 
-  // Convert to USD first if needed
-  let amountInUSD = amount;
-  if (fromCurrency !== 'USD') {
-    const usdRate = rates['USD'] || (1 / rates[fromCurrency]);
-    amountInUSD = amount / rates[fromCurrency];
+  // Use fallback rates for conversion
+  const fallbackRates = {
+    USD: { EUR: 0.92, AMD: 405, RUB: 92 },
+    EUR: { USD: 1.09, AMD: 440, RUB: 100 },
+    AMD: { USD: 0.0025, EUR: 0.0023, RUB: 0.23 },
+    RUB: { USD: 0.011, EUR: 0.01, AMD: 4.4 }
+  };
+
+  // Try to use provided rates first, then fallback
+  let rate = rates[toCurrency];
+  if (!rate && fallbackRates[fromCurrency]) {
+    rate = fallbackRates[fromCurrency][toCurrency];
+  }
+  if (!rate) {
+    // If still no rate, try inverse
+    if (fallbackRates[toCurrency] && fallbackRates[toCurrency][fromCurrency]) {
+      rate = 1 / fallbackRates[toCurrency][fromCurrency];
+    } else {
+      rate = 1; // Default to 1 if no rate found
+    }
   }
 
-  // Convert from USD to target currency
-  if (toCurrency === 'USD') {
-    return amountInUSD;
-  }
-
-  const targetRate = rates[toCurrency];
-  if (!targetRate) {
-    // Fallback conversion
-    return amountInUSD * getFallbackRate('USD', toCurrency);
-  }
-
-  return amountInUSD * targetRate;
+  return amount * rate;
 }
 
 function getFallbackRates(baseCurrency) {
