@@ -124,6 +124,50 @@ npm run test:watch
 npm test auth.test.js
 ```
 
+### Code Coverage
+
+The project uses **Jest's built-in code coverage** tool (Istanbul/nyc) to track test coverage.
+
+#### Running Coverage Reports
+
+```bash
+# Run tests with coverage report
+npm run test:coverage
+
+# Run coverage in watch mode
+npm run test:coverage:watch
+```
+
+#### Viewing Coverage Reports
+
+After running coverage, you can view detailed reports:
+
+1. **Terminal Report**: Summary table displayed in the terminal
+2. **HTML Report**: Interactive detailed report - open `server/coverage/lcov-report/index.html` in your browser
+3. **LCOV Report**: Machine-readable format for CI/CD integration (`server/coverage/lcov.info`)
+
+#### Current Coverage Status
+
+- **Overall Coverage**: ~45%
+  - Statements: 45%
+  - Branches: 47%
+  - Functions: 42%
+  - Lines: 45%
+
+**Well Covered Modules** (80%+):
+- ✅ Authentication (90%)
+- ✅ Transactions (83%)
+- ✅ Goals (80%)
+- ✅ Dashboard (86%)
+
+**Needs Coverage**:
+- ⚠️ Currency routes (0%)
+- ⚠️ Export routes (0%)
+- ⚠️ Notification routes (0%)
+- ⚠️ Services (12%)
+
+See [Coverage Guide](/server/tests/COVERAGE_GUIDE.md) for detailed information on improving coverage.
+
 ### Test Structure
 
 - **Black Box Tests** (`/server/tests/blackbox/`): Test API endpoints without knowledge of internal implementation
