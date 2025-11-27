@@ -432,14 +432,29 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📊 Roadmap
 
-- [x] Recurring transactions ✅
-- [x] Dark mode ✅
-- [x] Multi-currency support ✅
-- [x] Bill reminders with notifications ✅
-- [x] Export data (CSV, PDF) ✅
+### Completed Features ✅
+- [x] Recurring transactions
+- [x] Dark mode
+- [x] Multi-currency support
+- [x] Bill reminders with notifications
+- [x] Export data (CSV, PDF)
+- [x] Comprehensive test coverage (80%)
+- [x] Test documentation
+
+### Planned Features
 - [ ] Mobile app (React Native)
 - [ ] Bank account integration
 - [ ] Advanced analytics and forecasting
+
+### Feature Ideas & Enhancements
+See [FEATURE_IDEAS.md](FEATURE_IDEAS.md) for a comprehensive list of potential features including:
+- Transaction search & advanced filtering
+- Transaction tags/labels
+- Receipt attachments
+- Budget templates
+- CSV import
+- Spending trends & forecasting
+- And 27+ more ideas!
 
 ---
 
