@@ -49,6 +49,16 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: 'All fields are required' });
     }
 
+    // Validate month
+    if (month < 1 || month > 12) {
+      return res.status(400).json({ error: 'Month must be between 1 and 12' });
+    }
+
+    // Validate amount
+    if (amount < 0) {
+      return res.status(400).json({ error: 'Amount cannot be negative' });
+    }
+
     // Verify user is member
     const member = await dbGet(
       'SELECT * FROM family_members WHERE family_id = ? AND user_id = ?',
@@ -82,6 +92,57 @@ router.post('/', async (req, res) => {
     }
   } catch (error) {
     console.error('Create budget error:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Update budget
+router.put('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { amount, month, year } = req.body;
+    const userId = req.user.userId;
+
+    const budget = await dbGet('SELECT * FROM budgets WHERE id = ?', [id]);
+    if (!budget) {
+      return res.status(404).json({ error: 'Budget not found' });
+    }
+
+    // Verify user is member
+    const member = await dbGet(
+      'SELECT * FROM family_members WHERE family_id = ? AND user_id = ?',
+      [budget.family_id, userId]
+    );
+
+    if (!member) {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+
+    // Validate amount if provided
+    if (amount !== undefined) {
+      if (amount < 0) {
+        return res.status(400).json({ error: 'Amount cannot be negative' });
+      }
+      await dbRun('UPDATE budgets SET amount = ? WHERE id = ?', [amount, id]);
+    }
+
+    // Validate month if provided
+    if (month !== undefined) {
+      if (month < 1 || month > 12) {
+        return res.status(400).json({ error: 'Month must be between 1 and 12' });
+      }
+      await dbRun('UPDATE budgets SET month = ? WHERE id = ?', [month, id]);
+    }
+
+    // Update year if provided
+    if (year !== undefined) {
+      await dbRun('UPDATE budgets SET year = ? WHERE id = ?', [year, id]);
+    }
+
+    const updated = await dbGet('SELECT * FROM budgets WHERE id = ?', [id]);
+    res.json({ budget: updated });
+  } catch (error) {
+    console.error('Update budget error:', error);
     res.status(500).json({ error: 'Server error' });
   }
 });

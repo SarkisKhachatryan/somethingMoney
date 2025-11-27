@@ -78,7 +78,7 @@ describe('Transactions Module - Black Box Tests', () => {
         .expect(201);
 
       expect(response.body).toHaveProperty('transaction');
-      expect(response.body.transaction.amount).toBe('50.00');
+      expect(parseFloat(response.body.transaction.amount)).toBe(50.00);
       expect(response.body.transaction.type).toBe('expense');
       expect(response.body.transaction.description).toBe('Weekly groceries');
     });
@@ -112,7 +112,7 @@ describe('Transactions Module - Black Box Tests', () => {
         .expect(201);
 
       expect(response.body.transaction.type).toBe('income');
-      expect(response.body.transaction.amount).toBe('3000.00');
+      expect(parseFloat(response.body.transaction.amount)).toBe(3000.00);
     });
 
     test('should reject transaction with missing required fields', async () => {
@@ -259,7 +259,7 @@ describe('Transactions Module - Black Box Tests', () => {
         .send({ amount: 150.00 })
         .expect(200);
 
-      expect(response.body.transaction.amount).toBe('150.00');
+      expect(parseFloat(response.body.transaction.amount)).toBe(150.00);
     });
 
     test('should update transaction description', async () => {

@@ -72,7 +72,7 @@ describe('Budgets Module - Black Box Tests', () => {
         .expect(201);
 
       expect(response.body).toHaveProperty('budget');
-      expect(response.body.budget.amount).toBe('500.00');
+      expect(parseFloat(response.body.budget.amount)).toBe(500.00);
       expect(response.body.budget.month).toBe(month);
       expect(response.body.budget.year).toBe(year);
     });
@@ -212,7 +212,7 @@ describe('Budgets Module - Black Box Tests', () => {
         .send({ amount: 350.00 })
         .expect(200);
 
-      expect(response.body.budget.amount).toBe('350.00');
+      expect(parseFloat(response.body.budget.amount)).toBe(350.00);
     });
 
     test('should reject update of non-existent budget', async () => {

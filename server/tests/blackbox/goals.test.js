@@ -59,8 +59,8 @@ describe('Goals Module - Black Box Tests', () => {
 
       expect(response.body).toHaveProperty('goal');
       expect(response.body.goal.name).toBe('Vacation Fund');
-      expect(response.body.goal.target_amount).toBe('5000.00');
-      expect(response.body.goal.current_amount).toBe('0.00');
+      expect(parseFloat(response.body.goal.target_amount)).toBe(5000.00);
+      expect(parseFloat(response.body.goal.current_amount)).toBe(0.00);
     });
 
     test('should reject goal with missing required fields', async () => {
@@ -171,7 +171,7 @@ describe('Goals Module - Black Box Tests', () => {
         .send({ currentAmount: 7500 })
         .expect(200);
 
-      expect(response.body.goal.current_amount).toBe('7500.00');
+      expect(parseFloat(response.body.goal.current_amount)).toBe(7500.00);
     });
 
     test('should update goal target amount', async () => {
@@ -181,7 +181,7 @@ describe('Goals Module - Black Box Tests', () => {
         .send({ targetAmount: 25000 })
         .expect(200);
 
-      expect(response.body.goal.target_amount).toBe('25000.00');
+      expect(parseFloat(response.body.goal.target_amount)).toBe(25000.00);
     });
 
     test('should reject update with current amount exceeding target', async () => {

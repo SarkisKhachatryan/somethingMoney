@@ -46,6 +46,22 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: 'Family ID, name, and target amount are required' });
     }
 
+    // Validate target amount vs current amount
+    const current = currentAmount || 0;
+    if (current > targetAmount) {
+      return res.status(400).json({ error: 'Current amount cannot exceed target amount' });
+    }
+
+    // Validate target date is in the future
+    if (targetDate) {
+      const target = new Date(targetDate);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      if (target < today) {
+        return res.status(400).json({ error: 'Target date must be in the future' });
+      }
+    }
+
     // Verify user is member
     const member = await dbGet(
       'SELECT * FROM family_members WHERE family_id = ? AND user_id = ?',
@@ -85,6 +101,13 @@ router.put('/:id', async (req, res) => {
     const goal = await dbGet('SELECT * FROM goals WHERE id = ?', [id]);
     if (!goal) {
       return res.status(404).json({ error: 'Goal not found' });
+    }
+
+    // Validate current amount doesn't exceed target
+    const newCurrent = currentAmount !== undefined ? currentAmount : goal.current_amount;
+    const newTarget = targetAmount !== undefined ? targetAmount : goal.target_amount;
+    if (newCurrent > newTarget) {
+      return res.status(400).json({ error: 'Current amount cannot exceed target amount' });
     }
 
     // Verify user is member

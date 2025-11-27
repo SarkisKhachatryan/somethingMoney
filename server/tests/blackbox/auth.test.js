@@ -5,7 +5,11 @@
 
 import request from 'supertest';
 import express from 'express';
+import dotenv from 'dotenv';
 import authRoutes from '../../routes/auth.js';
+
+// Load environment variables for JWT_SECRET
+dotenv.config();
 
 const app = express();
 app.use(express.json());
@@ -149,11 +153,19 @@ describe('Authentication Module - Black Box Tests', () => {
     let authToken;
 
     beforeEach(async () => {
-      // Register and login to get token
-      const registerResponse = await request(app)
+      // Register user first
+      await request(app)
         .post('/api/auth/register')
         .send(testUser);
-      authToken = registerResponse.body.token;
+      
+      // Then login to get a valid token
+      const loginResponse = await request(app)
+        .post('/api/auth/login')
+        .send({
+          email: testUser.email,
+          password: testUser.password
+        });
+      authToken = loginResponse.body.token;
     });
 
     test('should return user info with valid token', async () => {
