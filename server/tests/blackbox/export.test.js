@@ -98,6 +98,11 @@ describe('Export Module - Black Box Tests', () => {
   });
 
   describe('GET /api/export/transactions/csv', () => {
+    // Test: Verify CSV export of transactions with proper headers and content type
+    // Logic: Users need to export transaction data for external analysis (Excel, etc.).
+    //        CSV format is universal and easy to import. This tests the export service
+    //        generates valid CSV with headers (Date, Type, Category, Amount, Description).
+    // Expected: Returns 200 status with text/csv content-type and attachment header
     test('should export transactions to CSV', async () => {
       const response = await request(app)
         .get('/api/export/transactions/csv')
@@ -114,6 +119,11 @@ describe('Export Module - Black Box Tests', () => {
       expect(response.text).toContain('Amount');
     });
 
+    // Test: Verify CSV export respects date range filtering (startDate, endDate)
+    // Logic: Users may want to export only specific time periods. This tests that
+    //        the export service correctly filters transactions by date range before
+    //        generating the CSV file.
+    // Expected: Returns 200 status with CSV containing only transactions in date range
     test('should filter transactions by date range', async () => {
       const startDate = new Date();
       startDate.setMonth(startDate.getMonth() - 1);
@@ -141,6 +151,10 @@ describe('Export Module - Black Box Tests', () => {
       expect(response.body).toHaveProperty('error');
     });
 
+    // Test: Verify access control prevents non-family members from exporting transactions
+    // Logic: Transaction data is sensitive. Only family members should be able to
+    //        export their family's financial data. This prevents data leakage.
+    // Expected: Returns 403 status when user is not a member of the family
     test('should reject access for non-family member', async () => {
       const otherUser = await request(app)
         .post('/api/auth/register')
@@ -161,6 +175,11 @@ describe('Export Module - Black Box Tests', () => {
   });
 
   describe('GET /api/export/transactions/pdf', () => {
+    // Test: Verify PDF export of transactions with proper content type and binary data
+    // Logic: PDF format is better for printing and sharing. This tests that the export
+    //        service generates a valid PDF buffer with proper headers. PDFs should
+    //        include formatted transaction data with proper currency formatting.
+    // Expected: Returns 200 status with application/pdf content-type and PDF buffer
     test('should export transactions to PDF', async () => {
       const response = await request(app)
         .get('/api/export/transactions/pdf')
@@ -174,6 +193,10 @@ describe('Export Module - Black Box Tests', () => {
       expect(Buffer.isBuffer(response.body)).toBe(true);
     });
 
+    // Test: Verify PDF export respects date range filtering
+    // Logic: Same as CSV export, but for PDF format. Users may want PDF reports
+    //        for specific time periods. This ensures date filtering works for PDFs too.
+    // Expected: Returns 200 status with PDF containing only transactions in date range
     test('should filter transactions by date range in PDF', async () => {
       const startDate = new Date();
       startDate.setMonth(startDate.getMonth() - 1);
@@ -203,6 +226,12 @@ describe('Export Module - Black Box Tests', () => {
   });
 
   describe('GET /api/export/budget/pdf', () => {
+    // Test: Verify PDF export of budget report for a specific month/year
+    // Logic: Budget reports show budget vs actual spending. This tests that the
+    //        export service generates a PDF with budget data, including category
+    //        breakdowns and spending summaries. Month and year are required to
+    //        identify which budget period to export.
+    // Expected: Returns 200 status with application/pdf content-type and PDF buffer
     test('should export budget report to PDF', async () => {
       const month = new Date().getMonth() + 1;
       const year = new Date().getFullYear();
@@ -219,6 +248,11 @@ describe('Export Module - Black Box Tests', () => {
       expect(Buffer.isBuffer(response.body)).toBe(true);
     });
 
+    // Test: Verify validation requires familyId, month, and year for budget export
+    // Logic: Budget reports are month-specific. All three parameters are required:
+    //        familyId (which family), month (which month), year (which year).
+    //        Without these, the system cannot generate the report.
+    // Expected: Returns 400 status with error message indicating missing parameters
     test('should reject export without required parameters', async () => {
       const response = await request(app)
         .get('/api/export/budget/pdf')
@@ -230,6 +264,10 @@ describe('Export Module - Black Box Tests', () => {
       expect(response.body).toHaveProperty('error');
     });
 
+    // Test: Verify access control prevents non-family members from exporting budget reports
+    // Logic: Budget data is sensitive financial information. Only family members
+    //        should be able to export budget reports. This prevents unauthorized access.
+    // Expected: Returns 403 status when user is not a member of the family
     test('should reject access for non-family member', async () => {
       const otherUser = await request(app)
         .post('/api/auth/register')
