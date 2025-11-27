@@ -103,6 +103,46 @@ This will start both:
 7. **Set goals** - Create financial goals and track your progress
 8. **Invite family members** - Add other family members by email to collaborate
 
+## 🧪 Testing
+
+The project includes comprehensive test suites covering both black box testing and real-world scenarios.
+
+### Running Tests
+
+```bash
+# Install test dependencies (if not already installed)
+cd server
+npm install
+
+# Run all tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Run specific test file
+npm test auth.test.js
+```
+
+### Test Structure
+
+- **Black Box Tests** (`/server/tests/blackbox/`): Test API endpoints without knowledge of internal implementation
+  - Authentication tests
+  - Transaction management tests
+  - Budget management tests
+  - Goals tests
+  - Recurring transactions tests
+
+- **Real-World Scenarios** (`/server/tests/scenarios/`): Simulate actual user workflows
+  - Family budget setup
+  - Monthly expense tracking
+  - Recurring bills management
+  - Budget overspending detection
+  - Financial goals tracking
+  - Multi-currency usage
+
+See [Test Documentation](/server/tests/README.md) for detailed information.
+
 ## 📁 Project Structure
 
 ```
