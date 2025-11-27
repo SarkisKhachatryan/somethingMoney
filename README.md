@@ -325,7 +325,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [x] Recurring transactions ✅
 - [x] Dark mode ✅
 - [x] Multi-currency support ✅
-- [ ] Bill reminders with notifications
+- [x] Bill reminders with notifications ✅
 - [ ] Export data (CSV, PDF)
 - [ ] Mobile app (React Native)
 - [ ] Bank account integration
