@@ -160,7 +160,7 @@
 
 | Module | Statements | Branches | Functions | Lines | Status |
 |--------|-----------|----------|-----------|-------|--------|
-| **Routes** | 79% | 78% | 93% | 79% | ✅ Good |
+| **Routes** | 85% | 91% | 98% | 85% | ✅ Excellent |
 | auth.js | 89% | 94% | 100% | 89% | ✅ Excellent |
 | transactions.js | 83% | 90% | 100% | 83% | ✅ Excellent |
 | goals.js | 80% | 80% | 100% | 80% | ✅ Good |
@@ -168,14 +168,14 @@
 | currency.js | 79% | 83% | 100% | 79% | ✅ Good |
 | notifications.js | 87% | 100% | 100% | 87% | ✅ Excellent |
 | export.js | 87% | 81% | 100% | 87% | ✅ Excellent |
-| dashboard.js | 86% | 63% | 50% | 86% | ✅ Good |
-| budgets.js | 77% | 65% | 100% | 77% | ⚠️ Fair |
-| family.js | 70% | 64% | 80% | 70% | ⚠️ Fair |
-| recurring.js | 63% | 63% | 83% | 63% | ⚠️ Fair |
-| **Services** | 84% | 53% | 93% | 84% | ✅ Good |
+| dashboard.js | 90% | 100% | 50% | 90% | ✅ Excellent |
+| budgets.js | 88% | 98% | 100% | 88% | ✅ Excellent |
+| family.js | 86% | 100% | 100% | 86% | ✅ Excellent |
+| recurring.js | 84% | 87% | 100% | 84% | ✅ Good |
+| **Services** | 89% | 63% | 93% | 89% | ✅ Excellent |
 | exportService.js | 94% | 62% | 95% | 93% | ✅ Excellent |
 | exchangeRate.js | 76% | 56% | 83% | 78% | ⚠️ Fair |
-| notificationService.js | 61% | 28% | 100% | 61% | ⚠️ Fair |
+| notificationService.js | 86% | 78% | 100% | 86% | ✅ Excellent |
 | **Middleware** | 90% | 88% | 100% | 90% | ✅ Excellent |
 
 ---
