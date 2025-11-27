@@ -41,6 +41,10 @@ describe('Category Module - Black Box Tests', () => {
   });
 
   describe('GET /api/categories/family/:familyId', () => {
+    // Test: Verify retrieval of all categories for a family
+    // Logic: Categories are family-specific, so this endpoint should return all categories
+    //        (both expense and income) that belong to the specified family
+    // Expected: Returns 200 status with categories array containing all family categories
     test('should get all categories for family', async () => {
       const response = await request(app)
         .get(`/api/categories/family/${familyId}`)
@@ -68,6 +72,10 @@ describe('Category Module - Black Box Tests', () => {
       expect(response.body).toHaveProperty('error');
     });
 
+    // Test: Verify authentication middleware requires valid JWT token
+    // Logic: All category endpoints require authentication to identify the user
+    //        and verify their family membership
+    // Expected: Returns 401 status when Authorization header is missing
     test('should reject request without authentication', async () => {
       const response = await request(app)
         .get(`/api/categories/family/${familyId}`)
@@ -76,6 +84,11 @@ describe('Category Module - Black Box Tests', () => {
   });
 
   describe('POST /api/categories', () => {
+    // Test: Verify successful creation of expense category with all required fields
+    // Logic: Categories are essential for organizing transactions. This test verifies
+    //        that expense categories can be created with name, type, color, and icon.
+    //        The categoryId is stored for use in subsequent tests.
+    // Expected: Returns 201 status with category object containing correct name and type
     test('should create expense category with valid data', async () => {
       const response = await request(app)
         .post('/api/categories')
@@ -95,6 +108,10 @@ describe('Category Module - Black Box Tests', () => {
       categoryId = response.body.category.id;
     });
 
+    // Test: Verify successful creation of income category (different type from expense)
+    // Logic: The system supports both expense and income categories. This test ensures
+    //        income categories are created correctly and type is properly stored.
+    // Expected: Returns 201 status with category type set to 'income'
     test('should create income category', async () => {
       const response = await request(app)
         .post('/api/categories')
@@ -111,6 +128,10 @@ describe('Category Module - Black Box Tests', () => {
       expect(response.body.category.type).toBe('income');
     });
 
+    // Test: Verify default values are applied when optional fields (color, icon) are omitted
+    // Logic: To improve UX, the system should provide sensible defaults so users don't
+    //        have to specify every field. This tests the default value logic.
+    // Expected: Returns 201 status with category having default color and icon values
     test('should use default color and icon if not provided', async () => {
       const response = await request(app)
         .post('/api/categories')
@@ -126,6 +147,10 @@ describe('Category Module - Black Box Tests', () => {
       expect(response.body.category.icon).toBeDefined();
     });
 
+    // Test: Verify validation rejects categories missing required fields (name, type)
+    // Logic: Name and type are essential for category functionality. Without them,
+    //        the category cannot be used for transactions or budgets.
+    // Expected: Returns 400 status with error message indicating missing fields
     test('should reject category with missing required fields', async () => {
       const response = await request(app)
         .post('/api/categories')
@@ -139,6 +164,10 @@ describe('Category Module - Black Box Tests', () => {
       expect(response.body).toHaveProperty('error');
     });
 
+    // Test: Verify access control prevents non-family members from creating categories
+    // Logic: Only family members should be able to create categories for a family.
+    //        This prevents unauthorized users from polluting the category list.
+    // Expected: Returns 403 status when user is not a member of the family
     test('should reject access for non-family member', async () => {
       const otherUser = await request(app)
         .post('/api/auth/register')
@@ -179,6 +208,10 @@ describe('Category Module - Black Box Tests', () => {
       updateCategoryId = response.body.category.id;
     });
 
+    // Test: Verify successful update of category name
+    // Logic: Users may want to rename categories as their needs change. This tests
+    //        partial updates - only the name field is updated, other fields remain unchanged.
+    // Expected: Returns 200 status with updated category containing new name
     test('should update category name', async () => {
       const response = await request(app)
         .put(`/api/categories/${updateCategoryId}`)
@@ -189,6 +222,10 @@ describe('Category Module - Black Box Tests', () => {
       expect(response.body.category.name).toBe('Updated Name');
     });
 
+    // Test: Verify successful update of category color for visual customization
+    // Logic: Color helps users visually distinguish categories. This tests that color
+    //        can be updated independently of other fields.
+    // Expected: Returns 200 status with updated category containing new color
     test('should update category color', async () => {
       const response = await request(app)
         .put(`/api/categories/${updateCategoryId}`)
@@ -199,6 +236,10 @@ describe('Category Module - Black Box Tests', () => {
       expect(response.body.category.color).toBe('#00FF00');
     });
 
+    // Test: Verify successful update of category icon for visual customization
+    // Logic: Icons provide quick visual identification. This tests that icon can be
+    //        updated independently, allowing users to customize their category appearance.
+    // Expected: Returns 200 status with updated category containing new icon
     test('should update category icon', async () => {
       const response = await request(app)
         .put(`/api/categories/${updateCategoryId}`)
@@ -209,6 +250,10 @@ describe('Category Module - Black Box Tests', () => {
       expect(response.body.category.icon).toBe('🎯');
     });
 
+    // Test: Verify update fails gracefully for non-existent category IDs
+    // Logic: Attempting to update a non-existent category should return a clear error
+    //        rather than silently failing or creating a new category.
+    // Expected: Returns 404 status with error message
     test('should reject update of non-existent category', async () => {
       const response = await request(app)
         .put('/api/categories/99999')
@@ -219,6 +264,10 @@ describe('Category Module - Black Box Tests', () => {
       expect(response.body).toHaveProperty('error');
     });
 
+    // Test: Verify access control prevents non-family members from updating categories
+    // Logic: Only family members should be able to modify categories. This prevents
+    //        unauthorized changes to category data.
+    // Expected: Returns 403 status when user is not a member of the category's family
     test('should reject access for non-family member', async () => {
       const otherUser = await request(app)
         .post('/api/auth/register')
@@ -253,6 +302,11 @@ describe('Category Module - Black Box Tests', () => {
       deleteCategoryId = response.body.category.id;
     });
 
+    // Test: Verify successful deletion of category by owner and removal from database
+    // Logic: Owners should be able to delete categories. After deletion, the category
+    //        should no longer appear in the family's category list. This tests both
+    //        the deletion endpoint and verifies the category is actually removed.
+    // Expected: Returns 200 status, and category is no longer retrievable via GET
     test('should delete category for owner', async () => {
       const response = await request(app)
         .delete(`/api/categories/${deleteCategoryId}`)
@@ -270,6 +324,10 @@ describe('Category Module - Black Box Tests', () => {
       expect(found).toBeUndefined();
     });
 
+    // Test: Verify deletion fails gracefully for non-existent category IDs
+    // Logic: Attempting to delete a non-existent category should return a clear error
+    //        rather than returning success (idempotent but should be explicit).
+    // Expected: Returns 404 status with error message
     test('should reject delete of non-existent category', async () => {
       const response = await request(app)
         .delete('/api/categories/99999')
@@ -279,6 +337,11 @@ describe('Category Module - Black Box Tests', () => {
       expect(response.body).toHaveProperty('error');
     });
 
+    // Test: Verify role-based access control - only owners/admins can delete categories
+    // Logic: Category deletion is a destructive operation. Regular members should not
+    //        be able to delete categories to prevent accidental data loss. This test
+    //        verifies that non-members cannot even create categories (403 on create).
+    // Expected: Returns 403 status when non-member tries to create/delete categories
     test('should reject delete for regular member (only owner/admin can delete)', async () => {
       // Create another user
       const otherUser = await request(app)
