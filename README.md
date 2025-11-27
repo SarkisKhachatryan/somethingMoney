@@ -148,34 +148,46 @@ After running coverage, you can view detailed reports:
 
 #### Current Coverage Status
 
-- **Overall Coverage**: ~45%
-  - Statements: 45%
-  - Branches: 47%
-  - Functions: 42%
-  - Lines: 45%
+- **Overall Coverage**: **80%** 🎉
+  - Statements: 80%
+  - Branches: 73%
+  - Functions: 93%
+  - Lines: 80%
 
 **Well Covered Modules** (80%+):
-- ✅ Authentication (90%)
+- ✅ Authentication (89%)
 - ✅ Transactions (83%)
 - ✅ Goals (80%)
 - ✅ Dashboard (86%)
+- ✅ Category routes (84%)
+- ✅ Export routes (87%)
+- ✅ Notification routes (87%)
+- ✅ Export service (94%)
 
-**Needs Coverage**:
-- ⚠️ Currency routes (0%)
-- ⚠️ Export routes (0%)
-- ⚠️ Notification routes (0%)
-- ⚠️ Services (12%)
+**Partially Covered** (60-80%):
+- ⚠️ Recurring routes (63%)
+- ⚠️ Family routes (70%)
+- ⚠️ Exchange rate service (76%)
+- ⚠️ Notification service (61%)
 
 See [Coverage Guide](/server/tests/COVERAGE_GUIDE.md) for detailed information on improving coverage.
 
 ### Test Structure
 
 - **Black Box Tests** (`/server/tests/blackbox/`): Test API endpoints without knowledge of internal implementation
-  - Authentication tests
-  - Transaction management tests
-  - Budget management tests
-  - Goals tests
-  - Recurring transactions tests
+  - Authentication tests (`auth.test.js`)
+  - Transaction management tests (`transactions.test.js`)
+  - Budget management tests (`budgets.test.js`)
+  - Goals tests (`goals.test.js`)
+  - Recurring transactions tests (`recurring.test.js`)
+  - Currency routes tests (`currency.test.js`) ✨ NEW
+  - Notification routes tests (`notifications.test.js`) ✨ NEW
+  - Export routes tests (`export.test.js`) ✨ NEW
+  - Category routes tests (`category.test.js`) ✨ NEW
+
+- **Service Tests** (`/server/tests/services/`): Test service layer functionality
+  - Exchange rate service tests (`exchangeRate.test.js`) ✨ NEW
+  - Export service tests (`exportService.test.js`) ✨ NEW
 
 - **Real-World Scenarios** (`/server/tests/scenarios/`): Simulate actual user workflows
   - Family budget setup

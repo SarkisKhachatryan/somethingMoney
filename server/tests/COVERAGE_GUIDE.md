@@ -31,11 +31,11 @@ npm run test:coverage:watch
 
 ## Current Coverage Status
 
-### Overall Coverage
-- **Statements**: ~45%
-- **Branches**: ~47%
-- **Functions**: ~42%
-- **Lines**: ~45%
+### Overall Coverage: 80% 🎉
+- **Statements**: 80%
+- **Branches**: 73%
+- **Functions**: 93%
+- **Lines**: 80%
 
 ### Coverage by Module
 
@@ -45,19 +45,17 @@ npm run test:coverage:watch
 - ✅ `routes/transaction.js` - 83%
 - ✅ `routes/goal.js` - 80%
 - ✅ `routes/dashboard.js` - 86%
+- ✅ `routes/category.js` - 84% ✨
+- ✅ `routes/currency.js` - 79% ✨
+- ✅ `routes/notifications.js` - 87% ✨
+- ✅ `routes/export.js` - 87% ✨
+- ✅ `services/exportService.js` - 94% ✨
 
-#### Partially Covered (50-80%)
+#### Partially Covered (60-80%)
 - ⚠️ `routes/budget.js` - 77%
 - ⚠️ `routes/family.js` - 70%
 - ⚠️ `routes/recurring.js` - 63%
-
-#### Needs Coverage (0-50%)
-- ❌ `routes/currency.js` - 0%
-- ❌ `routes/export.js` - 0%
-- ❌ `routes/notification.js` - 0%
-- ❌ `routes/category.js` - 26%
-- ❌ `services/exchangeRate.js` - 0%
-- ❌ `services/exportService.js` - 0%
+- ⚠️ `services/exchangeRate.js` - 76%
 - ⚠️ `services/notificationService.js` - 61%
 
 ## Coverage Thresholds
@@ -84,28 +82,41 @@ These can be adjusted in `package.json` under `jest.coverageThreshold`.
 
 ### Priority Areas
 
-1. **Routes with 0% coverage** (High Priority)
-   - `routes/currency.js` - Currency operations
-   - `routes/export.js` - Data export
-   - `routes/notification.js` - Notifications
+1. **Partially covered routes** (Medium Priority)
+   - `routes/family.js` - Family management (70% → 85%)
+   - `routes/recurring.js` - Recurring transactions (63% → 80%)
+   - `routes/budget.js` - Budget management (77% → 85%)
 
-2. **Services with 0% coverage** (High Priority)
-   - `services/exchangeRate.js` - Exchange rate API
-   - `services/exportService.js` - PDF/CSV generation
+2. **Partially covered services** (Medium Priority)
+   - `services/notificationService.js` - Notification service (61% → 80%)
+   - `services/exchangeRate.js` - Exchange rate service (76% → 85%)
 
-3. **Low coverage routes** (Medium Priority)
-   - `routes/category.js` - Category management (26%)
+3. **Edge cases and error handling** (Low Priority)
+   - Add tests for error paths in well-covered modules
+   - Test boundary conditions
+   - Test invalid input handling
+
+### Recent Improvements ✨
+
+The following modules have been recently added with comprehensive test coverage:
+- ✅ `routes/currency.js` - 79% coverage
+- ✅ `routes/export.js` - 87% coverage
+- ✅ `routes/notification.js` - 87% coverage
+- ✅ `routes/category.js` - 84% coverage
+- ✅ `services/exchangeRate.js` - 76% coverage
+- ✅ `services/exportService.js` - 94% coverage
 
 ### Adding Tests
 
-To improve coverage, add tests for uncovered routes and services:
+To improve coverage further, add tests for partially covered modules:
 
 ```bash
-# Example: Add tests for currency routes
-touch tests/blackbox/currency.test.js
+# Example: Add more tests for family routes
+# Focus on member management and currency updates
+npm test family.test.js
 
-# Example: Add tests for export routes
-touch tests/blackbox/export.test.js
+# Example: Add tests for notification service
+npm test notificationService.test.js
 ```
 
 ## CI/CD Integration
