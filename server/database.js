@@ -95,6 +95,7 @@ export async function initDatabase() {
       amount DECIMAL(10, 2) NOT NULL,
       month INTEGER NOT NULL CHECK(month >= 1 AND month <= 12),
       year INTEGER NOT NULL,
+      currency TEXT DEFAULT 'USD',
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (family_id) REFERENCES families(id) ON DELETE CASCADE,
       FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE,
@@ -113,6 +114,7 @@ export async function initDatabase() {
       amount DECIMAL(10, 2) NOT NULL,
       description TEXT,
       date DATE NOT NULL,
+      currency TEXT DEFAULT 'USD',
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (family_id) REFERENCES families(id) ON DELETE CASCADE,
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
@@ -131,6 +133,7 @@ export async function initDatabase() {
       current_amount DECIMAL(10, 2) DEFAULT 0,
       target_date DATE,
       description TEXT,
+      currency TEXT DEFAULT 'USD',
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (family_id) REFERENCES families(id) ON DELETE CASCADE,
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
@@ -146,7 +149,7 @@ export async function initDatabase() {
       type TEXT NOT NULL CHECK(type IN ('bill_reminder', 'budget_alert', 'goal_milestone')),
       title TEXT NOT NULL,
       message TEXT NOT NULL,
-      read BOOLEAN DEFAULT 0,
+      read INTEGER DEFAULT 0,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (family_id) REFERENCES families(id) ON DELETE CASCADE,
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
@@ -170,10 +173,23 @@ export async function initDatabase() {
       day_of_month INTEGER,
       day_of_week INTEGER,
       is_active BOOLEAN DEFAULT 1,
+      currency TEXT DEFAULT 'USD',
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (family_id) REFERENCES families(id) ON DELETE CASCADE,
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
       FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
+    )
+  `);
+
+  // Exchange rates table
+  await dbRun(`
+    CREATE TABLE IF NOT EXISTS exchange_rates (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      base_currency TEXT NOT NULL,
+      target_currency TEXT NOT NULL,
+      rate REAL NOT NULL,
+      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE(base_currency, target_currency)
     )
   `);
 
