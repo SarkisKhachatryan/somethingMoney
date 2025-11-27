@@ -1,0 +1,188 @@
+/**
+ * Black Box Tests for Authentication Module
+ * Tests the API endpoints without knowledge of internal implementation
+ */
+
+import request from 'supertest';
+import express from 'express';
+import authRoutes from '../../routes/auth.js';
+
+const app = express();
+app.use(express.json());
+app.use('/api/auth', authRoutes);
+
+describe('Authentication Module - Black Box Tests', () => {
+  let testUser = {
+    email: `test${Date.now()}@example.com`,
+    password: 'testpassword123',
+    name: 'Test User'
+  };
+
+  describe('POST /api/auth/register', () => {
+    test('should register a new user with valid data', async () => {
+      const response = await request(app)
+        .post('/api/auth/register')
+        .send(testUser)
+        .expect(201);
+
+      expect(response.body).toHaveProperty('token');
+      expect(response.body).toHaveProperty('user');
+      expect(response.body.user.email).toBe(testUser.email);
+      expect(response.body.user.name).toBe(testUser.name);
+      expect(response.body.user).not.toHaveProperty('password');
+    });
+
+    test('should reject registration with invalid email', async () => {
+      const response = await request(app)
+        .post('/api/auth/register')
+        .send({
+          ...testUser,
+          email: 'invalid-email'
+        })
+        .expect(400);
+
+      expect(response.body).toHaveProperty('errors');
+    });
+
+    test('should reject registration with short password', async () => {
+      const response = await request(app)
+        .post('/api/auth/register')
+        .send({
+          ...testUser,
+          password: '12345'
+        })
+        .expect(400);
+
+      expect(response.body).toHaveProperty('errors');
+    });
+
+    test('should reject registration with missing name', async () => {
+      const response = await request(app)
+        .post('/api/auth/register')
+        .send({
+          email: testUser.email,
+          password: testUser.password
+        })
+        .expect(400);
+
+      expect(response.body).toHaveProperty('errors');
+    });
+
+    test('should reject duplicate email registration', async () => {
+      // First registration
+      await request(app)
+        .post('/api/auth/register')
+        .send(testUser);
+
+      // Second registration with same email
+      const response = await request(app)
+        .post('/api/auth/register')
+        .send(testUser)
+        .expect(400);
+
+      expect(response.body).toHaveProperty('error');
+      expect(response.body.error).toContain('already exists');
+    });
+  });
+
+  describe('POST /api/auth/login', () => {
+    beforeEach(async () => {
+      // Register user before each login test
+      await request(app)
+        .post('/api/auth/register')
+        .send(testUser);
+    });
+
+    test('should login with correct credentials', async () => {
+      const response = await request(app)
+        .post('/api/auth/login')
+        .send({
+          email: testUser.email,
+          password: testUser.password
+        })
+        .expect(200);
+
+      expect(response.body).toHaveProperty('token');
+      expect(response.body).toHaveProperty('user');
+      expect(response.body.user.email).toBe(testUser.email);
+    });
+
+    test('should reject login with incorrect password', async () => {
+      const response = await request(app)
+        .post('/api/auth/login')
+        .send({
+          email: testUser.email,
+          password: 'wrongpassword'
+        })
+        .expect(401);
+
+      expect(response.body).toHaveProperty('error');
+      expect(response.body.error).toContain('Invalid credentials');
+    });
+
+    test('should reject login with non-existent email', async () => {
+      const response = await request(app)
+        .post('/api/auth/login')
+        .send({
+          email: 'nonexistent@example.com',
+          password: 'anypassword'
+        })
+        .expect(401);
+
+      expect(response.body).toHaveProperty('error');
+    });
+
+    test('should reject login with invalid email format', async () => {
+      const response = await request(app)
+        .post('/api/auth/login')
+        .send({
+          email: 'invalid-email',
+          password: testUser.password
+        })
+        .expect(400);
+
+      expect(response.body).toHaveProperty('errors');
+    });
+  });
+
+  describe('GET /api/auth/me', () => {
+    let authToken;
+
+    beforeEach(async () => {
+      // Register and login to get token
+      const registerResponse = await request(app)
+        .post('/api/auth/register')
+        .send(testUser);
+      authToken = registerResponse.body.token;
+    });
+
+    test('should return user info with valid token', async () => {
+      const response = await request(app)
+        .get('/api/auth/me')
+        .set('Authorization', `Bearer ${authToken}`)
+        .expect(200);
+
+      expect(response.body).toHaveProperty('user');
+      expect(response.body.user.email).toBe(testUser.email);
+      expect(response.body.user.name).toBe(testUser.name);
+    });
+
+    test('should reject request without token', async () => {
+      const response = await request(app)
+        .get('/api/auth/me')
+        .expect(401);
+
+      expect(response.body).toHaveProperty('error');
+    });
+
+    test('should reject request with invalid token', async () => {
+      const response = await request(app)
+        .get('/api/auth/me')
+        .set('Authorization', 'Bearer invalid-token')
+        .expect(401);
+
+      expect(response.body).toHaveProperty('error');
+    });
+  });
+});
+
