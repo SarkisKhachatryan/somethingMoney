@@ -133,6 +133,16 @@ function Budgets() {
               ))}
             </select>
           </div>
+          <button
+            onClick={() => {
+              const url = `/api/export/budget/pdf?familyId=${familyId}&month=${month}&year=${year}`;
+              window.open(url, '_blank');
+            }}
+            className="export-btn"
+            title="Export Budget Report to PDF"
+          >
+            📄 Export PDF
+          </button>
           <button onClick={() => setShowModal(true)} className="primary-btn">
             + Add Budget
           </button>

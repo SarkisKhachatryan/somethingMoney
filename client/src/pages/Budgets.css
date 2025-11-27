@@ -24,6 +24,25 @@
   flex-wrap: wrap;
 }
 
+.export-btn {
+  padding: 0.5rem 1rem;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.export-btn:hover {
+  background: var(--border-color);
+  transform: translateY(-1px);
+}
+
 .budgets-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));

@@ -136,6 +136,28 @@ function Transactions() {
               <option key={f.id} value={f.id}>{f.name}</option>
             ))}
           </select>
+          <div className="export-buttons">
+            <button
+              onClick={() => {
+                const url = `/api/export/transactions/csv?familyId=${familyId}`;
+                window.open(url, '_blank');
+              }}
+              className="export-btn"
+              title="Export to CSV"
+            >
+              📥 CSV
+            </button>
+            <button
+              onClick={() => {
+                const url = `/api/export/transactions/pdf?familyId=${familyId}`;
+                window.open(url, '_blank');
+              }}
+              className="export-btn"
+              title="Export to PDF"
+            >
+              📄 PDF
+            </button>
+          </div>
           <button onClick={() => setShowModal(true)} className="primary-btn">
             + Add Transaction
           </button>

@@ -16,7 +16,8 @@
     "bcryptjs": "^2.4.3",
     "sqlite3": "^5.1.6",
     "express-validator": "^7.0.1",
-    "axios": "^1.6.2"
+    "axios": "^1.6.2",
+    "pdfkit": "^0.14.0"
   }
 }
 

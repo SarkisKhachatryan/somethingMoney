@@ -132,6 +132,16 @@ function Dashboard() {
               <option key={y} value={y}>{y}</option>
             ))}
           </select>
+          <button
+            onClick={() => {
+              const url = `/api/export/budget/pdf?familyId=${familyId}&month=${month}&year=${year}`;
+              window.open(url, '_blank');
+            }}
+            className="export-btn"
+            title="Export Report to PDF"
+          >
+            📄 Export
+          </button>
         </div>
       </div>
 

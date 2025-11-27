@@ -12,6 +12,7 @@ import dashboardRoutes from './routes/dashboard.js';
 import notificationRoutes from './routes/notification.js';
 import recurringRoutes from './routes/recurring.js';
 import currencyRoutes from './routes/currency.js';
+import exportRoutes from './routes/export.js';
 
 dotenv.config();
 
@@ -35,6 +36,7 @@ initDatabase().then(() => {
   app.use('/api/notifications', notificationRoutes);
   app.use('/api/recurring', recurringRoutes);
   app.use('/api/currency', currencyRoutes);
+  app.use('/api/export', exportRoutes);
 
   // Health check
   app.get('/api/health', (req, res) => {
