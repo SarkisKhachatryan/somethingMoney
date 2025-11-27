@@ -40,6 +40,8 @@ describe('Currency Module - Black Box Tests', () => {
   });
 
   describe('GET /api/currency/rates', () => {
+    // Test: Verify retrieval of exchange rates with default base currency (USD)
+    // Expected: Returns 200 status with base currency and rates object
     test('should get exchange rates for default base currency (USD)', async () => {
       const response = await request(app)
         .get('/api/currency/rates')
@@ -52,6 +54,8 @@ describe('Currency Module - Black Box Tests', () => {
       expect(typeof response.body.rates).toBe('object');
     });
 
+    // Test: Verify retrieval of exchange rates for a specific base currency (EUR)
+    // Expected: Returns 200 status with specified base currency and corresponding rates
     test('should get exchange rates for specified base currency', async () => {
       const response = await request(app)
         .get('/api/currency/rates')
@@ -63,6 +67,8 @@ describe('Currency Module - Black Box Tests', () => {
       expect(response.body.rates).toBeDefined();
     });
 
+    // Test: Verify graceful handling of invalid base currency (should use fallback rates or return error)
+    // Expected: Returns either 200 with fallback rates or 500 error
     test('should handle invalid base currency gracefully', async () => {
       const response = await request(app)
         .get('/api/currency/rates')
@@ -83,6 +89,8 @@ describe('Currency Module - Black Box Tests', () => {
   });
 
   describe('GET /api/currency/convert', () => {
+    // Test: Verify currency conversion between different currencies (USD to EUR)
+    // Expected: Returns 200 status with original amount, converted amount, and formatted values
     test('should convert amount between currencies', async () => {
       const response = await request(app)
         .get('/api/currency/convert')
@@ -105,6 +113,8 @@ describe('Currency Module - Black Box Tests', () => {
       expect(typeof response.body.converted).toBe('number');
     });
 
+    // Test: Verify conversion returns same amount when from and to currencies are identical
+    // Expected: Returns 200 status with converted amount equal to original amount
     test('should return same amount when converting to same currency', async () => {
       const response = await request(app)
         .get('/api/currency/convert')
@@ -119,6 +129,8 @@ describe('Currency Module - Black Box Tests', () => {
       expect(response.body.converted).toBe(50);
     });
 
+    // Test: Verify validation requires all parameters (amount, from, to) for conversion
+    // Expected: Returns 400 status with error message indicating required fields
     test('should reject conversion with missing parameters', async () => {
       const response = await request(app)
         .get('/api/currency/convert')
@@ -133,6 +145,8 @@ describe('Currency Module - Black Box Tests', () => {
       expect(response.body.error).toContain('required');
     });
 
+    // Test: Verify conversion works correctly for various currency pairs (USD-AMD, EUR-RUB, AMD-USD)
+    // Expected: Returns 200 status with valid converted amounts for all pairs
     test('should convert between different currency pairs', async () => {
       const testCases = [
         { from: 'USD', to: 'AMD', amount: 10 },
@@ -153,6 +167,8 @@ describe('Currency Module - Black Box Tests', () => {
       }
     });
 
+    // Test: Verify authentication is required for currency conversion
+    // Expected: Returns 401 status when Authorization header is missing
     test('should reject request without authentication', async () => {
       const response = await request(app)
         .get('/api/currency/convert')
@@ -162,6 +178,8 @@ describe('Currency Module - Black Box Tests', () => {
   });
 
   describe('GET /api/currency/family/:familyId', () => {
+    // Test: Verify retrieval of family's currency information (currency code, symbol, rates)
+    // Expected: Returns 200 status with currency, symbol, and exchange rates
     test('should get currency info for family', async () => {
       const response = await request(app)
         .get(`/api/currency/family/${familyId}`)
@@ -175,6 +193,8 @@ describe('Currency Module - Black Box Tests', () => {
       expect(response.body.symbol).toBe('$');
     });
 
+    // Test: Verify access control - only family members can view family currency info
+    // Expected: Returns 403 status when user is not a member of the family
     test('should reject access for non-family member', async () => {
       // Create another user
       const otherUser = await request(app)
@@ -193,6 +213,8 @@ describe('Currency Module - Black Box Tests', () => {
       expect(response.body).toHaveProperty('error');
     });
 
+    // Test: Verify access control returns 403 (not 404) for non-existent families
+    // Expected: Returns 403 status because access check happens before existence check
     test('should return 403 for non-existent family (access denied)', async () => {
       // Non-existent family returns 403 because user is not a member
       const response = await request(app)

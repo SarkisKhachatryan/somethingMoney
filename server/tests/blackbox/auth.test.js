@@ -23,6 +23,8 @@ describe('Authentication Module - Black Box Tests', () => {
   };
 
   describe('POST /api/auth/register', () => {
+    // Test: Verify successful user registration with valid credentials
+    // Expected: Returns 201 status, JWT token, and user object (without password)
     test('should register a new user with valid data', async () => {
       const response = await request(app)
         .post('/api/auth/register')
@@ -36,6 +38,8 @@ describe('Authentication Module - Black Box Tests', () => {
       expect(response.body.user).not.toHaveProperty('password');
     });
 
+    // Test: Verify email validation rejects invalid email formats
+    // Expected: Returns 400 status with validation errors
     test('should reject registration with invalid email', async () => {
       const response = await request(app)
         .post('/api/auth/register')
@@ -48,6 +52,8 @@ describe('Authentication Module - Black Box Tests', () => {
       expect(response.body).toHaveProperty('errors');
     });
 
+    // Test: Verify password length validation (minimum 6 characters)
+    // Expected: Returns 400 status with validation errors
     test('should reject registration with short password', async () => {
       const response = await request(app)
         .post('/api/auth/register')
@@ -60,6 +66,8 @@ describe('Authentication Module - Black Box Tests', () => {
       expect(response.body).toHaveProperty('errors');
     });
 
+    // Test: Verify required field validation for user name
+    // Expected: Returns 400 status with validation errors
     test('should reject registration with missing name', async () => {
       const response = await request(app)
         .post('/api/auth/register')
@@ -72,6 +80,8 @@ describe('Authentication Module - Black Box Tests', () => {
       expect(response.body).toHaveProperty('errors');
     });
 
+    // Test: Verify duplicate email prevention - same email cannot register twice
+    // Expected: First registration succeeds, second returns 400 with error message
     test('should reject duplicate email registration', async () => {
       // First registration
       await request(app)
@@ -97,6 +107,8 @@ describe('Authentication Module - Black Box Tests', () => {
         .send(testUser);
     });
 
+    // Test: Verify successful login with valid email and password
+    // Expected: Returns 200 status, JWT token, and user object
     test('should login with correct credentials', async () => {
       const response = await request(app)
         .post('/api/auth/login')
@@ -111,6 +123,8 @@ describe('Authentication Module - Black Box Tests', () => {
       expect(response.body.user.email).toBe(testUser.email);
     });
 
+    // Test: Verify authentication fails with wrong password
+    // Expected: Returns 401 status with "Invalid credentials" error
     test('should reject login with incorrect password', async () => {
       const response = await request(app)
         .post('/api/auth/login')
@@ -124,6 +138,8 @@ describe('Authentication Module - Black Box Tests', () => {
       expect(response.body.error).toContain('Invalid credentials');
     });
 
+    // Test: Verify authentication fails for unregistered email addresses
+    // Expected: Returns 401 status with error message
     test('should reject login with non-existent email', async () => {
       const response = await request(app)
         .post('/api/auth/login')
@@ -136,6 +152,8 @@ describe('Authentication Module - Black Box Tests', () => {
       expect(response.body).toHaveProperty('error');
     });
 
+    // Test: Verify email format validation on login endpoint
+    // Expected: Returns 400 status with validation errors
     test('should reject login with invalid email format', async () => {
       const response = await request(app)
         .post('/api/auth/login')
@@ -168,6 +186,8 @@ describe('Authentication Module - Black Box Tests', () => {
       authToken = loginResponse.body.token;
     });
 
+    // Test: Verify authenticated user can retrieve their own profile information
+    // Expected: Returns 200 status with user object (email, name, id)
     test('should return user info with valid token', async () => {
       const response = await request(app)
         .get('/api/auth/me')
@@ -179,6 +199,8 @@ describe('Authentication Module - Black Box Tests', () => {
       expect(response.body.user.name).toBe(testUser.name);
     });
 
+    // Test: Verify authentication middleware requires valid JWT token
+    // Expected: Returns 401 status when Authorization header is missing
     test('should reject request without token', async () => {
       const response = await request(app)
         .get('/api/auth/me')
@@ -187,6 +209,8 @@ describe('Authentication Module - Black Box Tests', () => {
       expect(response.body).toHaveProperty('error');
     });
 
+    // Test: Verify JWT token validation rejects malformed or expired tokens
+    // Expected: Returns 401 status when token is invalid
     test('should reject request with invalid token', async () => {
       const response = await request(app)
         .get('/api/auth/me')
