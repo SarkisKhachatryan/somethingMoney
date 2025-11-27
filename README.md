@@ -18,7 +18,7 @@ A comprehensive web application for tracking family budgets, expenses, and finan
 - 🎯 **Goal Setting**: Set financial goals with progress tracking and target dates
 - 📈 **Reports & Analytics**: Visual reports with charts showing spending by category, budget vs actual
 - 🌙 **Dark Mode**: Beautiful dark theme with system preference detection and persistent settings
-- 🔔 **Notifications**: Basic notification system for budget alerts and reminders
+- 🔔 **Bill Reminders & Notifications**: Automatic bill reminders for upcoming recurring transactions and budget alerts
 - 🎨 **Customizable Categories**: Create expense and income categories with custom icons and colors
 - 📱 **Responsive Design**: Modern, mobile-friendly UI that works on all devices
 - 🔒 **Secure**: JWT-based authentication with password hashing
@@ -188,6 +188,12 @@ The application uses SQLite with the following main tables:
 - `GET /api/currency/family/:familyId` - Get family currency info
 - `PUT /api/family/:id/currency` - Update family currency
 
+### Notifications
+- `GET /api/notifications/family/:familyId` - Get notifications
+- `PUT /api/notifications/:id/read` - Mark notification as read/unread
+- `PUT /api/notifications/family/:familyId/read-all` - Mark all notifications as read
+- `DELETE /api/notifications/:id` - Delete notification
+
 ### Dashboard
 - `GET /api/dashboard/family/:familyId` - Get dashboard data
 
@@ -241,6 +247,15 @@ The application uses SQLite with the following main tables:
 - Automatic currency formatting across all pages
 - Exchange rate caching (1 hour TTL)
 - Set currency per family in Settings
+
+### Bill Reminders & Notifications
+- Automatic bill reminders for recurring transactions due in next 3 days
+- Budget alerts when spending reaches 80% or exceeds budget
+- Notification panel with unread indicator
+- Mark notifications as read/unread
+- Delete notifications
+- Real-time notification updates
+- Notification types: bill reminders, budget alerts, goal milestones
 
 ### Dark Mode
 - Toggle between light and dark themes
