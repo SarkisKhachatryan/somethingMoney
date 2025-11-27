@@ -1,6 +1,7 @@
 import express from 'express';
 import { authenticateToken } from '../middleware/auth.js';
 import { dbGet, dbAll } from '../database.js';
+import { createBudgetAlerts } from '../services/notificationService.js';
 
 const router = express.Router();
 router.use(authenticateToken);
@@ -101,6 +102,11 @@ router.get('/family/:familyId', async (req, res) => {
     const totalExpenses = parseFloat(expenseResult.total) || 0;
     const expenseBudget = parseFloat(budgetResult.expense_budget) || 0;
     const incomeBudget = parseFloat(budgetResult.income_budget) || 0;
+
+    // Create budget alerts (async, don't wait for it)
+    createBudgetAlerts(familyId, currentMonth, currentYear).catch(err => {
+      console.error('Error creating budget alerts:', err);
+    });
 
     res.json({
       summary: {

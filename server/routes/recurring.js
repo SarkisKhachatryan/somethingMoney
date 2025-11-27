@@ -1,6 +1,7 @@
 import express from 'express';
 import { authenticateToken } from '../middleware/auth.js';
 import { dbRun, dbGet, dbAll } from '../database.js';
+import { createBillReminders } from '../services/notificationService.js';
 
 const router = express.Router();
 router.use(authenticateToken);
@@ -305,6 +306,14 @@ router.post('/process', async (req, res) => {
       );
 
       created.push(transactionResult.lastID);
+    }
+
+    // Create bill reminders for upcoming bills
+    try {
+      await createBillReminders(familyId);
+    } catch (error) {
+      console.error('Error creating bill reminders:', error);
+      // Don't fail the request if reminder creation fails
     }
 
     res.json({ 

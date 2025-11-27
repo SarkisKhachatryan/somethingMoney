@@ -1,6 +1,9 @@
+import { useState, useEffect } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
+import axios from 'axios';
+import Notifications from './Notifications';
 import './Layout.css';
 
 function Layout() {
@@ -8,6 +11,44 @@ function Layout() {
   const location = useLocation();
   const { user, logout } = useAuth();
   const { isDark, toggleTheme } = useTheme();
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [familyId, setFamilyId] = useState(null);
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  useEffect(() => {
+    fetchFamilies();
+  }, []);
+
+  useEffect(() => {
+    if (familyId) {
+      fetchUnreadCount();
+      const interval = setInterval(fetchUnreadCount, 60000); // Update every minute
+      return () => clearInterval(interval);
+    }
+  }, [familyId]);
+
+  const fetchFamilies = async () => {
+    try {
+      const response = await axios.get('/api/family');
+      if (response.data.families.length > 0) {
+        setFamilyId(response.data.families[0].id);
+      }
+    } catch (error) {
+      console.error('Error fetching families:', error);
+    }
+  };
+
+  const fetchUnreadCount = async () => {
+    if (!familyId) return;
+    try {
+      const response = await axios.get(`/api/notifications/family/${familyId}`, {
+        params: { unreadOnly: 'true' }
+      });
+      setUnreadCount(response.data.unreadCount || 0);
+    } catch (error) {
+      console.error('Error fetching unread count:', error);
+    }
+  };
 
   const handleLogout = () => {
     logout();
@@ -58,8 +99,27 @@ function Layout() {
         </div>
       </nav>
       <main className="main-content">
+        <div className="main-header">
+          <button
+            className="notifications-btn"
+            onClick={() => setShowNotifications(!showNotifications)}
+            title="Notifications"
+          >
+            🔔
+            {unreadCount > 0 && <span className="notification-badge">{unreadCount}</span>}
+          </button>
+        </div>
         <Outlet />
       </main>
+      {showNotifications && (
+        <>
+          <div className="notifications-overlay" onClick={() => setShowNotifications(false)} />
+          <Notifications
+            familyId={familyId}
+            onClose={() => setShowNotifications(false)}
+          />
+        </>
+      )}
     </div>
   );
 }

@@ -9,6 +9,7 @@ router.use(authenticateToken);
 router.get('/family/:familyId', async (req, res) => {
   try {
     const { familyId } = req.params;
+    const { unreadOnly } = req.query;
     const userId = req.user.userId;
 
     // Verify user is member
@@ -21,14 +22,30 @@ router.get('/family/:familyId', async (req, res) => {
       return res.status(403).json({ error: 'Access denied' });
     }
 
-    const notifications = await dbAll(`
+    let query = `
       SELECT * FROM notifications
       WHERE family_id = ? AND (user_id IS NULL OR user_id = ?)
-      ORDER BY created_at DESC
-      LIMIT 50
-    `, [familyId, userId]);
+    `;
+    const params = [familyId, userId];
 
-    res.json({ notifications });
+    if (unreadOnly === 'true') {
+      query += ' AND read = 0';
+    }
+
+    query += ' ORDER BY created_at DESC LIMIT 50';
+
+    const notifications = await dbAll(query, params);
+    
+    // Count unread
+    const unreadCount = await dbGet(
+      'SELECT COUNT(*) as count FROM notifications WHERE family_id = ? AND (user_id IS NULL OR user_id = ?) AND read = 0',
+      [familyId, userId]
+    );
+
+    res.json({ 
+      notifications,
+      unreadCount: unreadCount?.count || 0
+    });
   } catch (error) {
     console.error('Get notifications error:', error);
     res.status(500).json({ error: 'Server error' });
@@ -39,6 +56,7 @@ router.get('/family/:familyId', async (req, res) => {
 router.put('/:id/read', async (req, res) => {
   try {
     const { id } = req.params;
+    const { read } = req.body;
     const userId = req.user.userId;
 
     const notification = await dbGet('SELECT * FROM notifications WHERE id = ?', [id]);
@@ -56,10 +74,37 @@ router.put('/:id/read', async (req, res) => {
       return res.status(403).json({ error: 'Access denied' });
     }
 
-    await dbRun('UPDATE notifications SET read = 1 WHERE id = ?', [id]);
-    res.json({ message: 'Notification marked as read' });
+    await dbRun('UPDATE notifications SET read = ? WHERE id = ?', [read !== undefined ? read : 1, id]);
+    res.json({ message: 'Notification updated' });
   } catch (error) {
     console.error('Mark notification read error:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Mark all notifications as read
+router.put('/family/:familyId/read-all', async (req, res) => {
+  try {
+    const { familyId } = req.params;
+    const userId = req.user.userId;
+
+    // Verify user is member
+    const member = await dbGet(
+      'SELECT * FROM family_members WHERE family_id = ? AND user_id = ?',
+      [familyId, userId]
+    );
+
+    if (!member) {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+
+    await dbRun(
+      'UPDATE notifications SET read = 1 WHERE family_id = ? AND (user_id IS NULL OR user_id = ?)',
+      [familyId, userId]
+    );
+    res.json({ message: 'All notifications marked as read' });
+  } catch (error) {
+    console.error('Mark all read error:', error);
     res.status(500).json({ error: 'Server error' });
   }
 });
