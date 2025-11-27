@@ -26,9 +26,10 @@
     "supertest": "^6.3.3"
   },
   "jest": {
-    "type": "module",
     "testEnvironment": "node",
-    "transform": {}
+    "transform": {},
+    "setupFilesAfterEnv": ["<rootDir>/tests/setup-global.js"],
+    "testTimeout": 10000
   }
 }
 
